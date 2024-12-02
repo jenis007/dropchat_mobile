@@ -1,16 +1,30 @@
+import 'package:device_preview/device_preview.dart';
+import 'package:dropchats/HomeScreen/HomeScreen/controller/home_controller.dart';
+import 'package:dropchats/screen/AuthScreen/controller/register_controller.dart';
 import 'package:dropchats/screen/OnBoarding/controller/onboarding_controller.dart';
+import 'package:dropchats/utils/screen_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'screen/AuthScreen/controller/auth_controller.dart';
+import 'screen/AuthScreen/controller/chat_controller.dart';
 import 'utils/app_routes.dart';
 import 'utils/shared_prefrence.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await preferences.init();
-  runApp(const MyApp());
+  runApp(
+    DevicePreview(
+      enabled: false,
+      tools: const [
+        ...DevicePreview.defaultTools,
+      ],
+      builder: (context) => const MyApp(),
+    ),
+  );
+  // runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -25,6 +39,7 @@ class MyApp extends StatelessWidget {
       useInheritedMediaQuery: true,
       rebuildFactor: (old, data) => true,
       builder: (context, child) {
+        ScreenSize.init(context);
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(
             textScaler: const TextScaler.linear(1.0),
@@ -33,9 +48,9 @@ class MyApp extends StatelessWidget {
             useInheritedMediaQuery: true,
             debugShowCheckedModeBanner: false,
             title: 'dropChats',
-            theme: ThemeData(),
+            theme: ThemeData(fontFamily: "Plus Jakarta Sans"),
             initialBinding: BaseBinding(),
-            initialRoute: Routes.splashScreen,
+            initialRoute: Routes.onBoarding,
             getPages: Routes.routes,
           ),
         );
@@ -49,5 +64,8 @@ class BaseBinding extends Bindings {
   void dependencies() {
     Get.lazyPut(() => OnBoardingController(), fenix: true);
     Get.lazyPut(() => AuthController(), fenix: true);
+    Get.lazyPut(() => RegisterController(), fenix: true);
+    Get.lazyPut(() => ChatController(), fenix: true);
+    Get.lazyPut(() => HomeController(), fenix: true);
   }
 }

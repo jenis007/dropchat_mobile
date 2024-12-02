@@ -1,6 +1,7 @@
 import 'package:dropchats/constant/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 extension PlusJakartaSansText on String {
   Widget whitePlusJakartaW700Text({
@@ -17,35 +18,131 @@ extension PlusJakartaSansText on String {
       overflow: textOverflow,
       maxLines: maxLine,
       textAlign: textAlign,
-      style: TextStyle(
+      style: GoogleFonts.plusJakartaSans(
           color: fontColor ?? AppColor.appTextColor,
           fontSize: fontSize ?? AppFontSize.font26,
           fontWeight: fontWeight ?? FontWeight.w700,
           decoration: textDecoration ?? TextDecoration.none,
+          decorationColor: fontColor ?? AppColor.appTextColor),
+    );
+  }
+
+  Widget greyPlusJakarta8W500Text({
+    Color? fontColor,
+    double? fontSize,
+    TextDecoration? textDecoration,
+    TextOverflow? textOverflow,
+    FontWeight? fontWeight,
+    TextAlign? textAlign,
+    int? maxLine,
+  }) {
+    return Text(
+      this,
+      overflow: textOverflow,
+      maxLines: maxLine,
+      textAlign: textAlign,
+      style: TextStyle(
+          color: fontColor ?? AppColor.greyColor,
+          fontSize: fontSize ?? AppFontSize.font8,
+          fontWeight: fontWeight ?? FontWeight.w500,
+          decoration: textDecoration ?? TextDecoration.none,
           fontFamily: "Plus Jakarta Sans",
+          decorationColor: fontColor ?? AppColor.greyColor),
+    );
+  }
+
+  Widget blackPlusJakarta14W400Text({
+    Color? fontColor,
+    double? fontSize,
+    TextDecoration? textDecoration,
+    TextOverflow? textOverflow,
+    FontWeight? fontWeight,
+    TextAlign? textAlign,
+    int? maxLine,
+  }) {
+    return Text(
+      this,
+      overflow: textOverflow,
+      maxLines: maxLine,
+      textAlign: textAlign,
+      style: GoogleFonts.plusJakartaSans(
+          color: fontColor ?? AppColor.blackColor,
+          fontSize: fontSize ?? AppFontSize.font14,
+          fontWeight: fontWeight ?? FontWeight.w400,
+          decoration: textDecoration ?? TextDecoration.none,
           decorationColor: fontColor ?? AppColor.appTextColor),
     );
   }
 }
 
 class TextStyleHelper {
-  static TextStyle blackColor36 = TextStyle(
+  static TextStyle blackColor36 = GoogleFonts.plusJakartaSans(
     color: AppColor.blackColor,
     fontSize: AppFontSize.font36,
     fontWeight: FontWeight.w700,
-    fontFamily: "Plus Jakarta Sans",
   );
-  static TextStyle primaryColor36 = TextStyle(
+  static TextStyle primaryColor36 = GoogleFonts.plusJakartaSans(
     color: AppColor.appPrimaryColor,
     fontSize: AppFontSize.font36,
     fontWeight: FontWeight.w700,
-    fontFamily: "Plus Jakarta Sans",
   );
-  static TextStyle greyColor15 = TextStyle(
+  static TextStyle primaryColor12 = GoogleFonts.plusJakartaSans(
+    color: AppColor.appPrimaryColor,
+    fontSize: AppFontSize.font12,
+    fontWeight: FontWeight.w400,
+  );
+  static TextStyle greyColor15 = GoogleFonts.plusJakartaSans(
     color: AppColor.greyColor,
     fontSize: AppFontSize.font15,
     fontWeight: FontWeight.w400,
-    fontFamily: "Plus Jakarta Sans",
+  );
+
+  static TextStyle darkGreyColor14 = GoogleFonts.plusJakartaSans(
+    color: AppColor.darkGreyColor,
+    fontSize: AppFontSize.font14,
+    fontWeight: FontWeight.w400,
+  );
+  static TextStyle lightGreyColor15 = GoogleFonts.plusJakartaSans(
+    color: AppColor.borderColor,
+    fontSize: AppFontSize.font15,
+    fontWeight: FontWeight.w400,
+  );
+  static TextStyle primaryLightColor16 = GoogleFonts.plusJakartaSans(
+    color: AppColor.primaryLightColor,
+    fontSize: AppFontSize.font16,
+    fontWeight: FontWeight.bold,
+  );
+  static TextStyle blackColor20 = GoogleFonts.plusJakartaSans(
+    color: AppColor.blackColor,
+    fontSize: AppFontSize.font20,
+    fontWeight: FontWeight.w600,
+  );
+  static TextStyle blackColor24 = GoogleFonts.plusJakartaSans(
+    color: AppColor.blackColor,
+    fontSize: AppFontSize.font24,
+    fontWeight: FontWeight.w600,
+  );
+  static TextStyle blackColor15 = GoogleFonts.plusJakartaSans(
+    color: AppColor.blackColor,
+    fontSize: AppFontSize.font15,
+    fontWeight: FontWeight.w400,
+  );
+
+  static TextStyle whiteColor16 = GoogleFonts.plusJakartaSans(
+    color: AppColor.whiteColor,
+    fontSize: AppFontSize.font15,
+    fontWeight: FontWeight.w400,
+  );
+  static TextStyle black12 = GoogleFonts.plusJakartaSans(
+    color: AppColor.blackColor,
+    fontSize: AppFontSize.font12,
+    fontWeight: FontWeight.w600,
+  );
+  static TextStyle primaryColor14 = TextStyle(
+    color: AppColor.appPrimaryColor,
+    fontSize: AppFontSize.font14,
+    fontWeight: FontWeight.w500,
+    fontFamily: "Roboto",
   );
 }
 

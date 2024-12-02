@@ -3,34 +3,34 @@ import 'package:dropchats/constant/app_string.dart';
 import 'package:dropchats/constant/app_textstyle.dart';
 import 'package:dropchats/screen/AuthScreen/controller/auth_controller.dart';
 import 'package:dropchats/screen/OnBoarding/controller/onboarding_controller.dart';
+import 'package:dropchats/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../constant/app_assets.dart';
+import '../../widgets/common_button.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class OnBoardingScreen extends StatefulWidget {
+  const OnBoardingScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<OnBoardingScreen> createState() => _OnBoardingScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _OnBoardingScreenState extends State<OnBoardingScreen> {
   OnBoardingController controller = Get.find();
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(body: GetBuilder<OnBoardingController>(
       builder: (controller) {
         return SafeArea(
-          child: Column(crossAxisAlignment: CrossAxisAlignment.end,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 671.h,
-                child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  SizedBox(
-                    height: 20.h,
-                  ),
+              Container(height: 671.h,
+                child: Column(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.center, children: [SizedBox(height: 5.h,),
                   SizedBox(
                     height: controller.selected == 0 ? 386.h : 472.h,
                     child: PageView.builder(
@@ -43,12 +43,11 @@ class _SplashScreenState extends State<SplashScreen> {
                         return assetImage(
                           controller.onBoardingImage[index],
                           height: index == 0 ? 386.h : 472.h,
-                          width: 380.w,
+                          width: width,
                         );
                       },
                     ),
-                  ),
-                  Spacer(),
+                  ),Spacer(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
@@ -101,19 +100,54 @@ class _SplashScreenState extends State<SplashScreen> {
                                 maxLines: 2,
                               ),
                   ),
-
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child:  Text(
-                      textAlign: TextAlign.center,
-                      controller.selected == 0? AppString.onBoardDes1:controller.selected == 1? AppString.onBoardDes2: AppString.onBoardDes3,
-                      style: TextStyleHelper.greyColor15,
-                    )
-                  ),
-                  controller.selected == 1? assetImage(AppAssets.avtarGroup,height: 17.h,width: 64.w):controller.selected == 0?SizedBox(height:  17.h,):SizedBox()
-                  
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        controller.selected == 0
+                            ? AppString.onBoardDes1
+                            : controller.selected == 1
+                                ? AppString.onBoardDes2
+                                : AppString.onBoardDes3,
+                        style: TextStyleHelper.greyColor15,
+                      )),
+                  controller.selected == 1
+                      ? assetImage(AppAssets.avtarGroup, height: 17.h, width: 64.w)
+                      : controller.selected == 0
+                          ? SizedBox(
+                              height: 17.h,
+                            )
+                          : SizedBox()
                 ]),
               ),
+              Spacer(),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                child: CommonButton(
+                  onTap: () {
+
+                    Get.toNamed(Routes.registerStepsScreen);
+                  },
+                  title: "Get Started",
+                  buttonColor: AppColor.appPrimaryColor,
+                  textColor: AppColor.primaryLightColor,
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                child: CommonButton(
+                  onTap: () {},
+                  title: "I already have an account",
+                  buttonColor: AppColor.primaryLightSecondColor,
+                  textColor: AppColor.appPrimaryColor,
+                ),
+              ),
+              SizedBox(
+                height: 30.h,
+              )
             ],
           ),
         );

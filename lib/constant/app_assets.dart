@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dropchats/constant/app_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shimmer/shimmer.dart';
 
 class AppAssets {
   static const imagePath = "assets/images/";
@@ -12,6 +14,40 @@ class AppAssets {
   static const onBoarding2 = "${imagePath}onBoarding2.png";
   static const onBoarding3 = "${imagePath}onBoarding3.png";
   static const avtarGroup = "${imagePath}avtarGroup.png";
+  static const userImage = "${imagePath}user.png";
+  static const search = "${imagePath}Search.png";
+  static const gamingImage = "${imagePath}gaming_image.png";
+
+  ///bottomBar
+  static const home = "${imagePath}home_icon.png";
+  static const community = "${imagePath}community_icon.png";
+  static const addIcon = "${imagePath}add_icon.png";
+  static const message = "${imagePath}message_icon.png";
+  static const profile = "${imagePath}profile_icon.png";
+  static const bottomCross = "${imagePath}bottom_cross.png";
+  static const bottomSpain = "${imagePath}bottom_spain.png";
+  static const bottomHowtodropchat = "${imagePath}bottom_howtodropchat.png";
+  static const bottomDropchat = "${imagePath}bottom_dropchat.png";
+  static const dummyProfile = "${imagePath}dummy_profile.jpeg";
+  static const dropChat = "${imagePath}dropchat_logo.png";
+
+  ///private chat
+  static const dropchatImage = "${imagePath}dropchat_image.png";
+  static const audioImage = "${imagePath}audio_image.png";
+
+  ///svg
+  static const backArrow = "${iconPath}backArrow.svg";
+  static const verificationIcon = "${iconPath}verification_icon.svg";
+  static const searchIcon = "${iconPath}Search.svg";
+  static const trophyIcon = "${iconPath}trophy_icon.svg";
+  static const discoverEvent = "${iconPath}discover_event.svg";
+  static const earnReward = "${iconPath}earn_reward.svg";
+  static const joinInterest = "${iconPath}join_interest.svg";
+  static const notificationIcon = "${iconPath}notification_icon.svg";
+  static const share = "${iconPath}share.svg";
+  static const congrats = "${iconPath}congrats.svg";
+  static const pinMap = "${iconPath}pin_map.svg";
+  static const scanIcon = "${iconPath}scaner_icon.svg";
 }
 
 Widget appIcon({required IconData icon, double? size, Color? color}) {
@@ -78,4 +114,50 @@ AssetImage decorationImage(
   double? scale,
 }) {
   return AssetImage(image);
+}
+
+Widget cachedNetworkImage(
+    {required String url,
+    double? radius,
+    double? height,
+    double? width,
+    BoxFit? boxFit,
+    Widget? errorWidget,
+    Color? color}) {
+  return ClipRRect(
+    borderRadius: BorderRadius.circular(radius ?? 0),
+    child: CachedNetworkImage(
+      height: height,
+      width: width,
+      errorWidget: (context, url, error) {
+        return errorWidget ??
+            Container(
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColor.primaryLightColor,
+              ),
+              child: Center(
+                child: assetImage(
+                  AppAssets.userImage,
+                  fit: BoxFit.fill,
+                ),
+              ),
+            );
+      },
+      placeholder: (context, url) {
+        return Shimmer.fromColors(
+          baseColor: AppColor.whiteColor.withOpacity(0.3),
+          highlightColor: AppColor.whiteColor.withOpacity(0.2),
+          child: Container(
+            decoration: const BoxDecoration(
+              color: AppColor.appPrimaryColor,
+            ),
+          ),
+        );
+      },
+      fit: boxFit ?? BoxFit.fitHeight,
+      imageUrl: url,
+      color: color,
+    ),
+  );
 }
