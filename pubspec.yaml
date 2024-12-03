@@ -44,6 +44,7 @@ dependencies:
   device_preview:
   flutter_multi_select_items: ^0.4.3
   google_fonts: ^6.2.1
+  showcaseview: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -103,6 +104,11 @@ flutter:
           weight: 700
         - asset: assets/fonts/Roboto-Bold.ttf
           weight: 900
+    - family: NotoSans
+      fonts:
+        - asset: assets/fonts/NotoSans-SemiBold.ttf
+          weight: 500
+
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -1,27 +1,42 @@
 import 'package:device_preview/device_preview.dart';
-import 'package:dropchats/HomeScreen/HomeScreen/controller/home_controller.dart';
+
+import 'package:dropchats/HomeScreen/controller/home_controller.dart';
 import 'package:dropchats/screen/AuthScreen/controller/register_controller.dart';
 import 'package:dropchats/screen/OnBoarding/controller/onboarding_controller.dart';
+import 'package:dropchats/screen/community/controller/communtity_controller.dart';
+import 'package:dropchats/screen/profile/controller/profile_controller.dart';
 import 'package:dropchats/utils/screen_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import 'screen/AuthScreen/controller/auth_controller.dart';
-import 'screen/AuthScreen/controller/chat_controller.dart';
+import 'screen/chat/controller/chat_controller.dart';
 import 'utils/app_routes.dart';
 import 'utils/shared_prefrence.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await preferences.init();
+  // runApp(
+  //   DevicePreview(
+  //     enabled: false,
+  //     tools: const [
+  //       ...DevicePreview.defaultTools,
+  //     ],
+  //     builder: (context) => const MyApp(),
+  //   ),
+  // );
   runApp(
     DevicePreview(
       enabled: false,
       tools: const [
         ...DevicePreview.defaultTools,
       ],
-      builder: (context) => const MyApp(),
+      builder: (context) => ShowCaseWidget(
+        builder: (context) => const MyApp(),
+      ),
     ),
   );
   // runApp(const MyApp());
@@ -67,5 +82,7 @@ class BaseBinding extends Bindings {
     Get.lazyPut(() => RegisterController(), fenix: true);
     Get.lazyPut(() => ChatController(), fenix: true);
     Get.lazyPut(() => HomeController(), fenix: true);
+    Get.lazyPut(() => ProfileController(), fenix: true);
+    Get.lazyPut(() => CommunityController(), fenix: true);
   }
 }

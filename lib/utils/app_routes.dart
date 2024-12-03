@@ -1,9 +1,11 @@
 import 'package:dropchats/screen/AuthScreen/View/RegisterSteps/verify_otp_screen.dart';
-import 'package:dropchats/screen/AuthScreen/View/chat/private_chat_screen.dart';
-import 'package:dropchats/screen/AuthScreen/View/community/Community_screen.dart';
-import 'package:dropchats/screen/AuthScreen/View/profile/profile_screen.dart';
+
 import 'package:dropchats/screen/OnBoarding/onboarding_screen.dart';
 import 'package:dropchats/screen/bottomScreen/home_screen.dart';
+import 'package:dropchats/screen/chat/insidechat_screen.dart';
+import 'package:dropchats/screen/chat/chat_screen.dart';
+import 'package:dropchats/screen/community/Community_screen.dart';
+import 'package:dropchats/screen/profile/profile_screen.dart';
 
 import 'package:get/get.dart';
 
@@ -17,6 +19,7 @@ class Routes {
   static String privateChatScreen = "/privateChatScreen";
   static String communityScreen = "/CommunityScreen";
   static String profileScreen = "/ProfileScreen";
+  static String insideChatScreen = "/insideChatScreen";
 
   static List<GetPage> routes = [
     GetPage(
@@ -45,7 +48,11 @@ class Routes {
     ),
     GetPage(
       name: profileScreen,
-      page: () => const ProfileScreen(),
+      page: () => ProfileScreen(),
+    ),
+    GetPage(
+      name: insideChatScreen,
+      page: () => InsideChatScreen(),
     ),
   ];
 }

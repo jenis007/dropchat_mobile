@@ -34,6 +34,36 @@ class AppAssets {
   ///private chat
   static const dropchatImage = "${imagePath}dropchat_image.png";
   static const audioImage = "${imagePath}audio_image.png";
+  static const back = "${imagePath}back.png";
+  static const giLive = "${imagePath}golive.png";
+  static const chatBackgroundImage = "${imagePath}chat_background_image.png";
+  static const attach = "${imagePath}Attach.png";
+  static const animalsAndNature = "${imagePath}Animals_and_nature.png";
+  static const camera = "${imagePath}Camera.png";
+  static const photos = "${imagePath}photps.png";
+  static const gif = "${imagePath}gif.png";
+  static const sound = "${imagePath}sound.png";
+  static const record = "${imagePath}record.png";
+  static const multiImage = "${imagePath}multi_image.png";
+  static const send = "${imagePath}Send.png";
+  static const chatGroup = "${imagePath}chat_group.png";
+  static const chatSuggation = "${imagePath}chat_suggation.png";
+  static const cross = "${imagePath}cross.png";
+  static const settings = "${imagePath}Settings.png";
+
+  ///profile screen
+  static const shareIcon = "${imagePath}shar_icon.png";
+  static const right = "${imagePath}right.png";
+  static const mentor = "${imagePath}mentor.png";
+  static const leval = "${imagePath}leval.png";
+  static const stremmer = "${imagePath}stremmer.png";
+  static const claps = "${imagePath}claps.png";
+  static const crystal = "${imagePath}crystal.png";
+  static const refrrals = "${imagePath}refrrals.png";
+  static const profileImage = "${imagePath}profile.jpeg";
+  static const dummy2 = "${imagePath}dummy2.jpeg";
+  static const status = "${imagePath}Status.png";
+  static const countshowImage = "${imagePath}countshow_image.png";
 
   ///svg
   static const backArrow = "${iconPath}backArrow.svg";

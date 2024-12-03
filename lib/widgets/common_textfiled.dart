@@ -26,7 +26,7 @@ class AppTextField extends StatelessWidget {
     this.keyBoardType,
     this.inputText,
     this.fillColor,
-    this.padding = const EdgeInsets.symmetric(horizontal: 16),
+    this.padding = const EdgeInsets.symmetric(horizontal: 0),
   });
 
   @override

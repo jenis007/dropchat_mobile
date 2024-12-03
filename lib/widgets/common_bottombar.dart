@@ -1,13 +1,15 @@
+import 'package:dropchats/HomeScreen/View/home_screen.dart';
 import 'package:dropchats/constant/app_assets.dart';
 import 'package:dropchats/constant/app_color.dart';
 import 'package:dropchats/constant/app_string.dart';
-import 'package:dropchats/screen/AuthScreen/View/RegisterSteps/steo_2_screen.dart';
-import 'package:dropchats/screen/AuthScreen/View/chat/private_chat_screen.dart';
-import 'package:dropchats/screen/AuthScreen/View/community/Community_screen.dart';
-import 'package:dropchats/screen/AuthScreen/View/profile/profile_screen.dart';
+
+import 'package:dropchats/screen/chat/chat_screen.dart';
+import 'package:dropchats/screen/community/Community_screen.dart';
+import 'package:dropchats/screen/profile/profile_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../HomeScreen/HomeScreen/View/home_screen.dart';
+
 import '../constant/app_textstyle.dart';
 
 /// Flutter code sample for [NavigationBar].
@@ -60,13 +62,17 @@ class _CommonBottomBarState extends State<CommonBottomBar> {
                 child: Container(
                   color: Colors.black.withOpacity(0.8),
                   child: Padding(
-                    padding: EdgeInsets.only(bottom: 20.h, top: 720.h),
+                    padding: EdgeInsets.only(
+                      bottom: 20.h,
+                    ),
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Image.asset(
                                 AppAssets.bottomSpain,
@@ -85,6 +91,8 @@ class _CommonBottomBarState extends State<CommonBottomBar> {
                             ],
                           ),
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Image.asset(
                                 AppAssets.bottomDropchat,
@@ -103,6 +111,8 @@ class _CommonBottomBarState extends State<CommonBottomBar> {
                             ],
                           ),
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Image.asset(
                                 AppAssets.bottomHowtodropchat,

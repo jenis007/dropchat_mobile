@@ -57,7 +57,17 @@ class AppString {
   static const event = "Events";
   static const peopleNearby = "People Nearby";
   static const welcomeDropChat = "🎉Welcome to DROPCHATS🎊";
+  static const communityDropChat = "🌟 Finals Week Support Circle";
   static const yourFirstCircleStart =
       "Your first circle starts in 3 Mins or less";
   static const joinNow = "Join Now";
+  static const chatHint = "Write something";
+  static const welcome = "🎉Welcome to #UCLA - 2028 Class!";
+  static const communities = "Communities";
+  static const subTitle =
+      "This is the start of the #UCLA - 2028 Class. Dropchat uses roles to enable start conversation & add new roles. These are completely optional.";
+  static const achievements = "Achievements";
+  static const friends = "Friends";
+  static const interests = "Interests";
+  static const leaderboard1 = "Leaderboard";
 }

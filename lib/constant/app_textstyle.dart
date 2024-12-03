@@ -144,6 +144,12 @@ class TextStyleHelper {
     fontWeight: FontWeight.w500,
     fontFamily: "Roboto",
   );
+  static TextStyle Black700 = TextStyle(
+    color: AppColor.blackColor,
+    fontSize: AppFontSize.font16,
+    fontWeight: FontWeight.w700,
+    fontFamily: "NotoSans",
+  );
 }
 
 class AppFontSize {
