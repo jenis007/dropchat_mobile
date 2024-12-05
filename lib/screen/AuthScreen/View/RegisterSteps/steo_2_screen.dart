@@ -6,6 +6,7 @@ import 'package:dropchats/constant/app_string.dart';
 import 'package:dropchats/constant/app_textstyle.dart';
 import 'package:dropchats/screen/AuthScreen/controller/register_controller.dart';
 import 'package:dropchats/utils/app_extention.dart';
+import 'package:dropchats/utils/app_routes.dart';
 import 'package:dropchats/widgets/common_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -165,30 +166,37 @@ class _Step2ScreenState extends State<Step2Screen> {
                   ),
                 ),
                 // (18.h).addHSpace(),
-                Padding(
-                  padding: EdgeInsets.only(right: 5.w, left: 5.w, top: 50.h),
-                  child: CommonButton(
-                    onTap: () {},
-                    title: AppString.createProfile,
-                    buttonColor: AppColor.appPrimaryColor,
-                    textColor: AppColor.primaryLightColor,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 9.h, left: 10.w),
-                  child: RichText(
-                    text: TextSpan(
-                      text: AppString.alreadyHaveAccount,
-                      style: TextStyleHelper.blackColor15
-                          .copyWith(fontSize: AppFontSize.font12),
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: AppString.signIn,
-                            style: TextStyleHelper.primaryColor12),
-                      ],
-                    ),
-                  ),
-                ),
+                // Padding(
+                //   padding: EdgeInsets.only(right: 5.w, left: 5.w, top: 50.h),
+                //   child: CommonButton(
+                //     onTap: () {
+                //       Get.toNamed(Routes.step3Screen);
+                //     },
+                //     title: AppString.createProfile,
+                //     buttonColor: AppColor.appPrimaryColor,
+                //     textColor: AppColor.primaryLightColor,
+                //   ),
+                // ),
+                // // GestureDetector(
+                // //   onTap: () {
+                // //     Get.toNamed(Routes.singInScreen);
+                // //   },
+                // //   child: Padding(
+                // //     padding: EdgeInsets.only(top: 9.h, left: 10.w),
+                // //     child: RichText(
+                // //       text: TextSpan(
+                // //         text: AppString.alreadyHaveAccount,
+                // //         style: TextStyleHelper.blackColor15
+                // //             .copyWith(fontSize: AppFontSize.font12),
+                // //         children: <TextSpan>[
+                // //           TextSpan(
+                // //               text: AppString.singIn,
+                // //               style: TextStyleHelper.primaryColor12),
+                // //         ],
+                // //       ),
+                // //     ),
+                // //   ),
+                // ),
               ],
             ),
           ),

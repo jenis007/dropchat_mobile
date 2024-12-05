@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dropchats/HomeScreen/View/tab_1_view.dart';
 import 'package:dropchats/HomeScreen/View/tab_2_view.dart';
 import 'package:dropchats/HomeScreen/View/tab_3_view.dart';
@@ -8,13 +6,12 @@ import 'package:dropchats/constant/app_assets.dart';
 import 'package:dropchats/constant/app_color.dart';
 import 'package:dropchats/constant/app_string.dart';
 import 'package:dropchats/constant/app_textstyle.dart';
-import 'package:dropchats/main.dart';
-import 'package:dropchats/widgets/common_button.dart';
-
+import 'package:dropchats/screen/bottomScreen/bottombar_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,14 +24,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   HomeController homeController = Get.find();
+  final bottomBarController =
+      Get.put(BottomBarController()); // Initialize the controller
   final GlobalKey _tabBarShowcaseKey = GlobalKey();
   final GlobalKey second = GlobalKey();
   final GlobalKey third = GlobalKey();
-  static final _scafoldKey = new GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
-
+    // checkFirstTime();
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => ShowCaseWidget.of(context)
           .startShowCase([_tabBarShowcaseKey, second, third]),
@@ -44,21 +42,26 @@ class _HomeScreenState extends State<HomeScreen>
 
   bool completedSuggesions = false;
   int currentStep = 1;
-  final int totalSteps = 3; // Example, total steps in the tutorial
+  final int totalSteps = 3;
   bool isTutorialCompleted = false;
-  bool _isOverlayVisible = false;
-
-  void _toggleOverlay() {
-    setState(() {
-      _isOverlayVisible = false; // Dismiss the overlay
-    });
-  }
 
   @override
   void dispose() {
     homeController.tabController?.dispose();
-
+    homeController.tabController = null; // Ensure no further usage
     super.dispose();
+  }
+
+  Future<void> checkFirstTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool hasSeenShowcase = prefs.getBool('hasSeenShowcase') ?? false;
+    if (!hasSeenShowcase) {
+      await prefs.setBool('hasSeenShowcase', true);
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => ShowCaseWidget.of(context)
+            .startShowCase([_tabBarShowcaseKey, second, third]),
+      );
+    }
   }
 
   @override
@@ -67,7 +70,6 @@ class _HomeScreenState extends State<HomeScreen>
       child: Stack(
         children: [
           Scaffold(
-            key: _scafoldKey,
             floatingActionButton: Padding(
               padding: EdgeInsets.only(bottom: 50.h),
               child: Column(
@@ -102,41 +104,35 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                   ),
                   SizedBox(height: 5.h),
-                  GetBuilder<HomeController>(
-                    builder: (controller) => CustomShowcaseWidget(
-                      height1: 82.h,
-                      width1: 190.w,
-                      height: 80.h,
-                      width: 265.w,
-                      onFinish: () {
-                        setState(() {
-                          ShowCaseWidget.of(context).dismiss();
-                          homeController.firstTimeOpen.value = true;
-
-                          print(
-                              'homeController.firstTimeOpen.value${homeController.firstTimeOpen.value}');
-
-                          _isOverlayVisible = true;
-                          isTutorialCompleted =
-                              true; // Mark tutorial as completed
-                        });
-                      },
-                      currentStep: 3,
-                      totalSteps: 3,
-                      description: AppString.thirdTip,
-                      globalKey: third,
-                      onNext: () {},
-                      isTutorialCompleted: true,
-                      child: GestureDetector(
-                        onTap: () => debugPrint('Scan button clicked'),
-                        child: FloatingActionButton(
-                          heroTag: 'scanButton',
-                          onPressed: () {},
-                          elevation: 10,
-                          shape: const CircleBorder(),
-                          backgroundColor: AppColor.whiteColor,
-                          child: svgAssetImage(AppAssets.scanIcon),
-                        ),
+                  CustomShowcaseWidget(
+                    height1: 82.h,
+                    width1: 190.w,
+                    height: 80.h,
+                    width: 265.w,
+                    onFinish: () {
+                      setState(() {
+                        ShowCaseWidget.of(context).dismiss();
+                        bottomBarController.changeBottomBarShowOverlay(
+                            true); // New color (red in this case)
+                        isTutorialCompleted =
+                            true; // Mark tutorial as completed
+                      });
+                    },
+                    currentStep: 3,
+                    totalSteps: 3,
+                    description: AppString.thirdTip,
+                    globalKey: third,
+                    onNext: () {},
+                    isTutorialCompleted: true,
+                    child: GestureDetector(
+                      onTap: () => debugPrint('Scan button clicked'),
+                      child: FloatingActionButton(
+                        heroTag: 'scanButton',
+                        onPressed: () {},
+                        elevation: 10,
+                        shape: const CircleBorder(),
+                        backgroundColor: AppColor.whiteColor,
+                        child: svgAssetImage(AppAssets.scanIcon),
                       ),
                     ),
                   ),
@@ -277,69 +273,6 @@ class _HomeScreenState extends State<HomeScreen>
               },
             ),
           ),
-          if (_isOverlayVisible && isTutorialCompleted == true)
-            Visibility(
-              visible: _isOverlayVisible,
-              child: GestureDetector(
-                onTap:
-                    _toggleOverlay, // Close overlay when tapping anywhere outside
-                child: Container(
-                  color: Colors.black.withOpacity(0.8),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      bottom: 20.h,
-                    ),
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            AppString.welcomeDropChat,
-                            style: TextStyle(
-                                color: AppColor.whiteColor,
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          SizedBox(
-                            height: 8.h,
-                          ),
-                          Text(
-                            AppString.sub,
-                            style: TextStyle(
-                                color: AppColor.whiteColor,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          SizedBox(
-                            height: 104.h,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(right: 20.w, left: 20.w),
-                            child: CommonButton(
-                              buttonColor: AppColor.appPrimaryColor,
-                              textColor: AppColor.whiteColor,
-                              title: 'Join Now',
-                              onTap: () {
-                                setState(() {
-                                  _isOverlayVisible =
-                                      false; // Dismiss the overlay
-
-                                  _toggleOverlay();
-                                });
-
-                                // Get.back();
-                              },
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
         ],
       ),
     );
@@ -348,7 +281,7 @@ class _HomeScreenState extends State<HomeScreen>
 
 class CustomShowcaseWidget extends StatefulWidget {
   final Widget child;
-  final String description; // Pass description as a string
+  final String description;
   final GlobalKey globalKey;
   final int currentStep;
   final int totalSteps;
@@ -387,9 +320,7 @@ class _CustomShowcaseWidgetState extends State<CustomShowcaseWidget> {
       key: widget.globalKey,
       height: widget.height,
       width: widget.width,
-
       tooltipPosition: TooltipPosition.bottom,
-      // targetShapeBorder: CircleBorder(),
       container: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -454,7 +385,7 @@ class _CustomShowcaseWidgetState extends State<CustomShowcaseWidget> {
             ),
           ),
           Positioned(
-              left: 189,
+              left: 176,
               top: 35.h,
               child: Image.asset(
                 AppAssets.div,
@@ -464,27 +395,6 @@ class _CustomShowcaseWidgetState extends State<CustomShowcaseWidget> {
       ),
       child: widget.child,
     );
-    // return Showcase.withWidget(
-    //   key: globalKey,
-    //   tooltipBackgroundColor: Colors.orange,
-    //   description: _buildTooltipContent(),
-    //   descTextStyle: TextStyleHelper.whiteColor16.copyWith(fontSize: 10.sp),
-    //   tooltipPadding: const EdgeInsets.all(10),
-    //   tooltipBorderRadius: BorderRadius.circular(8),
-    //   tooltipPosition: TooltipPosition.bottom,
-    //   showArrow: true,
-    //   disableMovingAnimation: true,
-    //   disableScaleAnimation: true,
-    //   child: child,
-    // );
-  }
-
-  String _buildTooltipContent() {
-    return '''
-${widget.description}
-
-${widget.currentStep}/${widget.totalSteps}
-''';
   }
 }
 
@@ -526,12 +436,11 @@ class _CustomShowcaseWidgetTabState extends State<CustomShowcaseWidgetTab> {
   @override
   Widget build(BuildContext context) {
     return Showcase.withWidget(
+      toolTipSlideEndDistance: 5,
       key: widget.globalKey,
       height: widget.height,
       width: widget.width,
-      scrollLoadingWidget: Text("jfnfnj"),
       tooltipPosition: TooltipPosition.bottom,
-      // targetShapeBorder: CircleBorder(),
       container: Padding(
         padding: const EdgeInsets.only(
           right: 20,
@@ -600,7 +509,7 @@ class _CustomShowcaseWidgetTabState extends State<CustomShowcaseWidgetTab> {
             Positioned(
                 right: 0,
                 left: 0,
-                bottom: 110.h,
+                bottom: 114.h,
                 child: Image.asset(
                   AppAssets.divIcon,
                   height: 6.h,
@@ -610,26 +519,5 @@ class _CustomShowcaseWidgetTabState extends State<CustomShowcaseWidgetTab> {
       ),
       child: widget.child,
     );
-    // return Showcase.withWidget(
-    //   key: globalKey,
-    //   tooltipBackgroundColor: Colors.orange,
-    //   description: _buildTooltipContent(),
-    //   descTextStyle: TextStyleHelper.whiteColor16.copyWith(fontSize: 10.sp),
-    //   tooltipPadding: const EdgeInsets.all(10),
-    //   tooltipBorderRadius: BorderRadius.circular(8),
-    //   tooltipPosition: TooltipPosition.bottom,
-    //   showArrow: true,
-    //   disableMovingAnimation: true,
-    //   disableScaleAnimation: true,
-    //   child: child,
-    // );
-  }
-
-  String _buildTooltipContent() {
-    return '''
-${widget.description}
-
-${widget.currentStep}/${widget.totalSteps}
-''';
   }
 }

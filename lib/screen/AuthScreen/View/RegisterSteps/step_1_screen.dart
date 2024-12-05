@@ -4,6 +4,7 @@ import 'package:dropchats/constant/app_string.dart';
 import 'package:dropchats/constant/app_textstyle.dart';
 import 'package:dropchats/screen/AuthScreen/controller/register_controller.dart';
 import 'package:dropchats/utils/app_extention.dart';
+import 'package:dropchats/utils/app_routes.dart';
 import 'package:dropchats/widgets/common_button.dart';
 import 'package:dropchats/widgets/common_textfiled.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +22,6 @@ class _Step1ScreenState extends State<Step1Screen> {
   RegisterController registerController = Get.find();
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
     return Scaffold(body: GetBuilder<RegisterController>(
       builder: (controller) {
         return Padding(
@@ -64,74 +63,84 @@ class _Step1ScreenState extends State<Step1Screen> {
                     children: List.generate(
                       4,
                       (index) {
-                        return Container(
-                          margin: EdgeInsets.only(bottom: 15.h),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10.h, vertical: 10),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8.r),
-                              border: Border.all(
-                                  color: AppColor.lightGreyColor, width: 1.w)),
-                          child: Row(
-                            children: [
-                              Center(
-                                  child: assetImage(AppAssets.userImage,
-                                      fit: BoxFit.fill,
-                                      height: 53.h,
-                                      width: 53.w)),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10.w),
-                                child: Text(
-                                  controller.cityText[index],
-                                  style: TextStyleHelper.blackColor15,
+                        return GestureDetector(
+                          onTap: () {
+                            registerController.currentIndexSelectedJoinCampus
+                                .value = index; // Update selected index
+                          },
+                          child: Obx(
+                            () {
+                              return Container(
+                                margin: EdgeInsets.only(bottom: 15.h),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10.h, vertical: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  border: Border.all(
+                                    color: registerController
+                                                .currentIndexSelectedJoinCampus
+                                                .value ==
+                                            index
+                                        ? AppColor
+                                            .appPrimaryColor // Selected border color
+                                        : AppColor
+                                            .lightGreyColor, // Default border color
+                                    width: 1.w,
+                                  ),
                                 ),
-                              ),
-                              const Spacer(),
-                              Center(
-                                  child: svgAssetImage(AppAssets.trophyIcon,
-                                      fit: BoxFit.fill,
-                                      height: 16.h,
-                                      width: 16.w)),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  '12.3K',
-                                  style: TextStyleHelper.blackColor15
-                                      .copyWith(fontSize: AppFontSize.font12),
+                                child: Row(
+                                  children: [
+                                    Center(
+                                        child: assetImage(AppAssets.userImage,
+                                            fit: BoxFit.fill,
+                                            height: 53.h,
+                                            width: 53.w)),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10.w),
+                                      child: Text(
+                                        controller.cityText[index],
+                                        style: TextStyleHelper.blackColor15,
+                                      ),
+                                    ),
+                                    const Spacer(),
+                                    Center(
+                                        child: svgAssetImage(
+                                            AppAssets.trophyIcon,
+                                            fit: BoxFit.fill,
+                                            height: 16.h,
+                                            width: 16.w)),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        '12.3K',
+                                        style: TextStyleHelper.blackColor15
+                                            .copyWith(
+                                                fontSize: AppFontSize.font12),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
+                              );
+                            },
                           ),
                         );
                       },
                     ),
                   ),
                 ),
-                (100.h).addHSpace(),
-                Padding(
-                  padding: EdgeInsets.only(right: 5.w, left: 5.w, top: 33.h),
-                  child: CommonButton(
-                    onTap: () {},
-                    title: AppString.next,
-                    buttonColor: AppColor.appPrimaryColor,
-                    textColor: AppColor.primaryLightColor,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 9.h, left: 10.w),
-                  child: RichText(
-                    text: TextSpan(
-                      text: AppString.alreadyHaveAccount,
-                      style: TextStyleHelper.blackColor15
-                          .copyWith(fontSize: AppFontSize.font12),
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: AppString.signIn,
-                            style: TextStyleHelper.primaryColor12),
-                      ],
-                    ),
-                  ),
-                ),
+                // (100.h).addHSpace(),
+                // Padding(
+                //   padding: EdgeInsets.only(right: 5.w, left: 5.w, top: 33.h),
+                //   child: CommonButton(
+                //     onTap: () {
+                //       Get.toNamed(Routes.step2Screen);
+                //     },
+                //     title: AppString.next,
+                //     buttonColor: AppColor.appPrimaryColor,
+                //     textColor: AppColor.primaryLightColor,
+                //   ),
+                // ),
               ],
             ),
           ),

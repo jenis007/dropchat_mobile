@@ -20,7 +20,7 @@ class DropChatCircalChatTab extends StatefulWidget {
 
 class _DropChatCircalChatTabState extends State<DropChatCircalChatTab> {
   ChatController chatController = Get.find();
-  @override
+
   Widget build(BuildContext context) {
     return GetBuilder<ChatController>(
       builder: (controller) {
@@ -60,6 +60,9 @@ class _DropChatCircalChatTabState extends State<DropChatCircalChatTab> {
                       // mainAxisSize: MainAxisSize.min,
                       children: [
                         ListTile(
+                          onTap: () {
+                            Get.toNamed(Routes.insideDropChatScreen);
+                          },
                           leading: Container(
                             height: 55.w,
                             width: 55.h,

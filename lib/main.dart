@@ -3,6 +3,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:dropchats/HomeScreen/controller/home_controller.dart';
 import 'package:dropchats/screen/AuthScreen/controller/register_controller.dart';
 import 'package:dropchats/screen/OnBoarding/controller/onboarding_controller.dart';
+import 'package:dropchats/screen/bottomScreen/bottombar_controller.dart';
 import 'package:dropchats/screen/community/controller/communtity_controller.dart';
 import 'package:dropchats/screen/profile/controller/profile_controller.dart';
 import 'package:dropchats/utils/screen_size.dart';
@@ -90,5 +91,6 @@ class BaseBinding extends Bindings {
     Get.lazyPut(() => HomeController(), fenix: true);
     Get.lazyPut(() => ProfileController(), fenix: true);
     Get.lazyPut(() => CommunityController(), fenix: true);
+    Get.lazyPut(() => BottomBarController(), fenix: true);
   }
 }

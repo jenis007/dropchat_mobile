@@ -53,18 +53,24 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                   buttonColor: AppColor.appPrimaryColor,
                   textColor: AppColor.primaryLightColor,
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 9.h, left: 10.w),
-                  child: RichText(
-                    text: TextSpan(
-                      text: AppString.alreadyHaveAccount,
-                      style: TextStyleHelper.blackColor15
-                          .copyWith(fontSize: AppFontSize.font12),
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: AppString.signIn,
-                            style: TextStyleHelper.primaryColor12),
-                      ],
+                GestureDetector(
+                  onTap: () {
+                    controller.onVerifyOnSinInTap(true);
+                    Get.toNamed(Routes.singInScreen);
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 9.h, left: 10.w),
+                    child: RichText(
+                      text: TextSpan(
+                        text: AppString.alreadyHaveAccount,
+                        style: TextStyleHelper.blackColor15
+                            .copyWith(fontSize: AppFontSize.font12),
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: AppString.singIn,
+                              style: TextStyleHelper.primaryColor12),
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -9,14 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class InsideChatScreen extends StatefulWidget {
-  const InsideChatScreen({super.key});
+class InsideDropChatScreen extends StatefulWidget {
+  const InsideDropChatScreen({super.key});
 
   @override
-  State<InsideChatScreen> createState() => _InsideChatScreenState();
+  State<InsideDropChatScreen> createState() => _InsideDropChatScreenState();
 }
 
-class _InsideChatScreenState extends State<InsideChatScreen> {
+class _InsideDropChatScreenState extends State<InsideDropChatScreen> {
   @override
   void initState() {
     isOverlayVisibleFirstTimeOpenChat = true;
@@ -316,49 +316,75 @@ class _InsideChatScreenState extends State<InsideChatScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text(
-                            AppString.chatFirstTimeMessage,
-                            textAlign: TextAlign.center,
-                            style: TextStyleHelper.whiteColor16.copyWith(
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w400,
-                                decoration: TextDecoration.none),
+                          Image.asset(
+                            AppAssets.chatCrystal,
+                            height: 100.sp,
                           ),
                           SizedBox(
                             height: 8.h,
                           ),
-                          Text(
-                            AppString.chatFirstSubMessage,
-                            textAlign: TextAlign.center,
-                            style: TextStyleHelper.whiteColor16.copyWith(
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.w400,
-                                decoration: TextDecoration.none),
+                          Padding(
+                            padding: EdgeInsets.only(right: 30.w, left: 30.w),
+                            child: Text(
+                              AppString.chatSub,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              style: TextStyleHelper.whiteColor16.copyWith(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w300,
+                                  decoration: TextDecoration.none),
+                            ),
                           ),
                           SizedBox(
-                            height: 104.h,
+                            height: 32.h,
                           ),
                           Padding(
-                            padding: EdgeInsets.only(right: 20.w, left: 20.w),
-                            child: CommonButton(
-                              buttonColor: AppColor.appPrimaryColor,
-                              textColor: AppColor.whiteColor,
-                              title: 'Break the Ice',
-                              buttonTextStyle: TextStyleHelper.whiteColor16
-                                  .copyWith(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w400,
-                                      decoration: TextDecoration.none),
-                              onTap: () {
-                                setState(() {
-                                  isOverlayVisibleFirstTimeOpenChat =
-                                      false; // Dismiss the overlay
+                            padding: const EdgeInsets.all(20),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 105.w,
+                                  height: 48.h,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                          color: AppColor.appPrimaryColor)),
+                                  child: Center(
+                                    child: Text(
+                                      AppString.backHome,
+                                      style: TextStyleHelper.primaryColor14
+                                          .copyWith(
+                                              decoration: TextDecoration.none),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                Flexible(
+                                  child: CommonButton(
+                                    buttonColor: AppColor.appPrimaryColor,
+                                    textColor: AppColor.whiteColor,
+                                    title: AppString.checkRewards,
+                                    buttonTextStyle:
+                                        TextStyleHelper.whiteColor16.copyWith(
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w400,
+                                            decoration: TextDecoration.none),
+                                    onTap: () {
+                                      setState(() {
+                                        isOverlayVisibleFirstTimeOpenChat =
+                                            false; // Dismiss the overlay
 
-                                  toggleOverlayBottomBar();
-                                });
+                                        toggleOverlayBottomBar();
+                                      });
 
-                                // Get.back();
-                              },
+                                      // Get.back();
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
                           )
                         ],

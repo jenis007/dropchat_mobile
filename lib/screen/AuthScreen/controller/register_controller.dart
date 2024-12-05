@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 
 class RegisterController extends GetxController {
+  final GlobalKey<FormState> formKeyStep3 = GlobalKey<FormState>();
   TextEditingController searchController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -31,6 +32,12 @@ class RegisterController extends GetxController {
   ];
 
   RxInt currentIndex = 0.obs;
+  RxInt currentIndexSelectedJoinCampus = (-1).obs;
+  RxBool verifyOnSinInTap = false.obs;
+  void onVerifyOnSinInTap(bool newStatuse) {
+    verifyOnSinInTap.value = newStatuse;
+    update();
+  }
 
   bool isVisible = false;
   bool isConfirmVisible = false;

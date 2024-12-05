@@ -32,7 +32,8 @@ class CommonButton extends StatelessWidget {
             child: Text(
           title,
           style: buttonTextStyle ??
-              TextStyleHelper.primaryLightColor16.copyWith(color: textColor),
+              TextStyleHelper.primaryLightColor16
+                  .copyWith(color: textColor, decoration: TextDecoration.none),
         )),
       ),
     );

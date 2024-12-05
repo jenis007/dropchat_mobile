@@ -19,8 +19,9 @@ class AppString {
   static const step3Desc = "Finish up your profile and get matched";
   static const searchCollege = "Search your college";
   static const alreadyHaveAccount = "Already have an account?";
-  static const signIn = " Sign in";
+  static const signUp = " Sign UP";
   static const next = "Next";
+  static const singIn = " Sing in";
   static const createProfile = "Create my profile";
   static const whyChooseInterest = "Why Choose Interest?";
   static const joinInterest = "Join interest-based Circles";
@@ -34,7 +35,9 @@ class AppString {
   static const gender = "Gender";
   static const dateBirth = "Date of Birth";
   static const createPassword = "Create Password";
+  static const password = "Password";
   static const confirmPass = "Confirm Password";
+  static const forgotPassword = "Forgot Your Password?";
   static const verify = "Verify";
   static const otpTitle = "Enter your OTP";
   static const otpTitle2 = "An SMS/Mail was sent to your phone";
@@ -63,18 +66,31 @@ class AppString {
   static const joinNow = "Join Now";
   static const chatHint = "Write something";
   static const welcome = "🎉Welcome to #UCLA - 2028 Class!";
+  static const checkRewards = "Check rewards";
+  static const backHome = "Back Home";
+  static const chatFirstTimeMessage =
+      "Congratulations🎊 You just joined your First Circle🎉";
+  static const chatFirstSubMessage =
+      "❄️Break the Ice by simply introducing yourself to the circle❄️";
   static const communities = "Communities";
+  static const chatSub =
+      "Circle complete! Thanks for joining the conversation. Here’s your reward—a [Panda Badge/Discount]. Keep chatting to earn more!”";
   static const subTitle =
       "This is the start of the #UCLA - 2028 Class. Dropchat uses roles to enable start conversation & add new roles. These are completely optional.";
   static const achievements = "Achievements";
   static const friends = "Friends";
   static const interests = "Interests";
   static const leaderboard1 = "Leaderboard";
+  static const singInTitle = "Your Gateway, to a better college experience";
+  static const singInTitle2 = "welcome Back!";
   static const sub = "Let’s Explore your first circle and start chatting";
   static const firstTip =
-      "Looking to connect in real life? Browse local events hosted by student groups and nearby organizations.";
+      "''Looking to connect in real life? Browse local events hosted by student groups and nearby organizations''.";
   static const secondTip =
-      "Click here to find events and People using the maps and also mark your Location for your friends to see.";
+      "''Click here to find events and People using the maps and also mark your Location for your friends to see.''";
   static const thirdTip =
-      "Scan a QR code at a party and wait for a notification to shake your phone and win Instant Prizes.";
+      "''Scan a QR code at a party and wait for a notification to shake your phone and win Instant Prizes.''";
+
+  ///validations Strings
+  static const stp3 = "Choose 3+ topics to join Your circle";
 }

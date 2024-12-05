@@ -6,5 +6,6 @@ class HomeController extends GetxController {
   RxBool firstTimeOpen = false.obs;
   void finishSetup() {
     firstTimeOpen.value = false;
+    update();
   }
 }

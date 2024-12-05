@@ -73,6 +73,29 @@ extension PlusJakartaSansText on String {
           decorationColor: fontColor ?? AppColor.appTextColor),
     );
   }
+
+  Widget whitePoppinsW500Text({
+    Color? fontColor,
+    double? fontSize,
+    TextDecoration? textDecoration,
+    TextOverflow? textOverflow,
+    FontWeight? fontWeight,
+    TextAlign? textAlign,
+    int? maxLine,
+  }) {
+    return Text(
+      this,
+      overflow: textOverflow,
+      maxLines: maxLine,
+      style: GoogleFonts.plusJakartaSans(
+          color: fontColor ?? AppColor.whiteColor,
+          fontSize: fontSize ?? AppFontSize.font14,
+          fontWeight: fontWeight ?? FontWeight.w500,
+          decoration: textDecoration ?? TextDecoration.none,
+          decorationColor: AppColor.whiteColor),
+      textAlign: textAlign,
+    );
+  }
 }
 
 class TextStyleHelper {

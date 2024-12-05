@@ -17,6 +17,7 @@ class AppAssets {
   static const userImage = "${imagePath}user.png";
   static const search = "${imagePath}Search.png";
   static const gamingImage = "${imagePath}gaming_image.png";
+  static const isolationMode = "${imagePath}Isolation_Mode.png";
 
   ///bottomBar
   static const home = "${imagePath}home_icon.png";
@@ -66,6 +67,9 @@ class AppAssets {
   static const countshowImage = "${imagePath}countshow_image.png";
   static const div = "${imagePath}div.png";
   static const divIcon = "${imagePath}div_icon.png";
+
+  ///chat
+  static const chatCrystal = "${imagePath}chat_crystal.png";
 
   ///svg
   static const backArrow = "${iconPath}backArrow.svg";
