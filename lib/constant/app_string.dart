@@ -70,4 +70,11 @@ class AppString {
   static const friends = "Friends";
   static const interests = "Interests";
   static const leaderboard1 = "Leaderboard";
+  static const sub = "Let’s Explore your first circle and start chatting";
+  static const firstTip =
+      "Looking to connect in real life? Browse local events hosted by student groups and nearby organizations.";
+  static const secondTip =
+      "Click here to find events and People using the maps and also mark your Location for your friends to see.";
+  static const thirdTip =
+      "Scan a QR code at a party and wait for a notification to shake your phone and win Instant Prizes.";
 }

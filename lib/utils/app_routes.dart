@@ -32,7 +32,7 @@ class Routes {
     ),
     GetPage(
       name: homeScreen,
-      page: () => const HomeScreen(),
+      page: () => const MainBottomScreen(),
     ),
     GetPage(
       name: verifyScreen,

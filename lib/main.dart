@@ -42,6 +42,12 @@ void main() async {
   // runApp(const MyApp());
 }
 
+/// Global key for the first showcase widget
+final GlobalKey firstShowcaseWidget = GlobalKey();
+
+/// Global key for the last showcase widget
+final GlobalKey lastShowcaseWidget = GlobalKey();
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

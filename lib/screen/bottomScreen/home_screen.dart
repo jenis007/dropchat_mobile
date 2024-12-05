@@ -1,14 +1,14 @@
 import 'package:dropchats/widgets/common_bottombar.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class MainBottomScreen extends StatefulWidget {
+  const MainBottomScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<MainBottomScreen> createState() => _MainBottomScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _MainBottomScreenState extends State<MainBottomScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

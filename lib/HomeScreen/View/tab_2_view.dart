@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Tab2View extends StatefulWidget {
-  const Tab2View({super.key});
+  final Key? keyname;
+  Tab2View({super.key, this.keyname});
 
   @override
   State<Tab2View> createState() => _Tab2ViewState();

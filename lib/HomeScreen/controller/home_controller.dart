@@ -3,4 +3,8 @@ import 'package:get/get.dart';
 
 class HomeController extends GetxController {
   TabController? tabController;
+  RxBool firstTimeOpen = false.obs;
+  void finishSetup() {
+    firstTimeOpen.value = false;
+  }
 }

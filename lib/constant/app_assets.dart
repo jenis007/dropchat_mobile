@@ -64,6 +64,8 @@ class AppAssets {
   static const dummy2 = "${imagePath}dummy2.jpeg";
   static const status = "${imagePath}Status.png";
   static const countshowImage = "${imagePath}countshow_image.png";
+  static const div = "${imagePath}div.png";
+  static const divIcon = "${imagePath}div_icon.png";
 
   ///svg
   static const backArrow = "${iconPath}backArrow.svg";
