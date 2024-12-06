@@ -108,4 +108,15 @@ class AuthRepo {
 
     return result;
   }
+
+  static Future<ResponseItem> getCollegeListRepo() async {
+    String requestUrl = "${AppUrls.baseUrl}${MethodNames.getCollegeList}";
+
+    ResponseItem result = await BaseApiHelper.getRequest(requestUrl);
+
+    debugPrint("SIGNUP - URL===>>>$requestUrl");
+    debugPrint("SIGNUP - RESULT===>>>$result");
+
+    return result;
+  }
 }

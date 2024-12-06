@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "47949668851",
+    "project_id": "dropchatapp-8f951",
+    "storage_bucket": "dropchatapp-8f951.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:47949668851:android:f898c0b1ab973eb8fbb286",
+        "android_client_info": {
+          "package_name": "com.dropchat.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBltmu4cgYr9ZBQRu53R-tYl--FT0G-hH8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

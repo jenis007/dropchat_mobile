@@ -51,6 +51,7 @@ class AppAssets {
   static const chatSuggation = "${imagePath}chat_suggation.png";
   static const cross = "${imagePath}cross.png";
   static const settings = "${imagePath}Settings.png";
+  static const verifiedIcon = "${imagePath}_AvatarVerifiedIcon.png";
 
   ///profile screen
   static const shareIcon = "${imagePath}shar_icon.png";
@@ -73,7 +74,7 @@ class AppAssets {
 
   ///svg
   static const backArrow = "${iconPath}backArrow.svg";
-  static const verificationIcon = "${iconPath}verification_icon.svg";
+
   static const searchIcon = "${iconPath}Search.svg";
   static const trophyIcon = "${iconPath}trophy_icon.svg";
   static const discoverEvent = "${iconPath}discover_event.svg";

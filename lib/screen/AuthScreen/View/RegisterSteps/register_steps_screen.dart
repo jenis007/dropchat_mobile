@@ -95,79 +95,97 @@ class _RegisterStepsScreenState extends State<RegisterStepsScreen> {
                     },
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    right: 24.w,
-                    left: 14.w,
-                  ),
-                  child: controller.currentPage == 0
-                      ? CommonButton(
-                          onTap: () {
-                            controller.pageController.nextPage(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.ease,
-                            );
-                          },
-                          title: AppString.next,
-                          buttonColor: AppColor.appPrimaryColor,
-                          textColor: AppColor.primaryLightColor,
-                        )
-                      : controller.currentPage == 1
-                          ? CommonButton(
-                              onTap: () {
-                                if (registerController.selectedChips.length !=
-                                    4) {
-                                  showErrorSnackBar(AppString.stp3);
-                                } else {
-                                  controller.pageController.nextPage(
-                                    duration: const Duration(milliseconds: 300),
-                                    curve: Curves.ease,
-                                  );
-                                }
-                              },
-                              title: AppString.createProfile,
-                              buttonColor: AppColor.appPrimaryColor,
-                              textColor: AppColor.primaryLightColor,
-                            )
-                          : CommonButton(
-                              onTap: () {
-                                if (registerController
-                                    .formKeyStep3.currentState!
-                                    .validate()) {
-                                  Get.toNamed(Routes.verifyScreen);
-                                  print('jsdnkjsdn');
-                                }
-                                // Handle last step, final submit, etc.
-                              },
-                              title: AppString
-                                  .createProfile, // Change text for last page
-                              buttonColor: AppColor.appPrimaryColor,
-                              textColor: AppColor.primaryLightColor,
-                            ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Get.toNamed(Routes.singInScreen);
-                  },
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding:
-                          EdgeInsets.only(top: 9.h, left: 15.w, bottom: 70.h),
-                      child: RichText(
-                        text: TextSpan(
-                          text: AppString.alreadyHaveAccount,
-                          style: TextStyleHelper.blackColor15
-                              .copyWith(fontSize: AppFontSize.font12),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: AppString.singIn,
-                                style: TextStyleHelper.primaryColor12),
-                          ],
+                Obx(
+                  () {
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                            right: 24.w,
+                            left: 14.w,
+                          ),
+                          child: (controller.currentPage == 0 &&
+                                  registerController.getCollegeListModel.value
+                                          ?.data.length !=
+                                      null)
+                              ? CommonButton(
+                                  onTap: () {
+                                    controller.pageController.nextPage(
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      curve: Curves.ease,
+                                    );
+                                  },
+                                  title: AppString.next,
+                                  buttonColor: AppColor.appPrimaryColor,
+                                  textColor: AppColor.primaryLightColor,
+                                )
+                              : controller.currentPage == 1
+                                  ? CommonButton(
+                                      onTap: () {
+                                        controller.pageController.nextPage(
+                                          duration:
+                                              const Duration(milliseconds: 300),
+                                          curve: Curves.ease,
+                                        );
+                                        // if (registerController.selectedChips.length !=
+                                        //     4) {
+                                        //   showErrorSnackBar(AppString.stp3);
+                                        // } else {
+                                        //   controller.pageController.nextPage(
+                                        //     duration: const Duration(milliseconds: 300),
+                                        //     curve: Curves.ease,
+                                        //   );
+                                        // }
+                                      },
+                                      title: AppString.createProfile,
+                                      buttonColor: AppColor.appPrimaryColor,
+                                      textColor: AppColor.primaryLightColor,
+                                    )
+                                  : CommonButton(
+                                      onTap: () {
+                                        Get.toNamed(Routes.verifyScreen);
+                                        // if (registerController
+                                        //     .formKeyStep3.currentState!
+                                        //     .validate()) {
+                                        //
+                                        //   print('jsdnkjsdn');
+                                        // }
+                                        // Handle last step, final submit, etc.
+                                      },
+                                      title: AppString
+                                          .createProfile, // Change text for last page
+                                      buttonColor: AppColor.appPrimaryColor,
+                                      textColor: AppColor.primaryLightColor,
+                                    ),
                         ),
-                      ),
-                    ),
-                  ),
+                        GestureDetector(
+                          onTap: () {
+                            Get.toNamed(Routes.singInScreen);
+                          },
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  top: 9.h, left: 15.w, bottom: 70.h),
+                              child: RichText(
+                                text: TextSpan(
+                                  text: AppString.alreadyHaveAccount,
+                                  style: TextStyleHelper.blackColor15
+                                      .copyWith(fontSize: AppFontSize.font12),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: AppString.singIn,
+                                        style: TextStyleHelper.primaryColor12),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    );
+                  },
                 )
               ],
             ),

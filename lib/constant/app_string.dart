@@ -93,4 +93,7 @@ class AppString {
 
   ///validations Strings
   static const stp3 = "Choose 3+ topics to join Your circle";
+
+  static const somethingWentWrong = "Something went wrong";
+  static const serverError = "Server Error";
 }

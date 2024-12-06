@@ -71,10 +71,28 @@ class _Step3ScreenState extends State<Step3Screen> {
                   AppString.dateBirth.blackPlusJakarta14W400Text(),
                   Padding(
                     padding: EdgeInsets.only(top: 6.h, bottom: 10.h),
-                    child: const AppTextField(
+                    child: AppTextField(
+                      controller: controller.dateController,
+                      onTap: () async {
+                        print("hello");
+                        DateTime? selectedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime(2101),
+                        );
+                        if (selectedDate != null) {
+                          // If the user selected a date, format it and update the controller
+                          String formattedDate =
+                              "${selectedDate.day} ${selectedDate.month} ${selectedDate.year}";
+                          // Update the controller's text with the selected date
+                          TextEditingController().text = formattedDate;
+                        }
+                      },
                       validator: Validator.birthDateValidator,
                       autoValidate: true,
                       hintText: "25 Oct 2010",
+                      readonlyShow: true,
                     ),
                   ),
                   AppString.createPassword.blackPlusJakarta14W400Text(),

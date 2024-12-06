@@ -6,7 +6,9 @@ import 'package:dropchats/screen/OnBoarding/controller/onboarding_controller.dar
 import 'package:dropchats/screen/bottomScreen/bottombar_controller.dart';
 import 'package:dropchats/screen/community/controller/communtity_controller.dart';
 import 'package:dropchats/screen/profile/controller/profile_controller.dart';
+import 'package:dropchats/services/Firebase/firebase_options.dart';
 import 'package:dropchats/utils/screen_size.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -19,6 +21,10 @@ import 'utils/shared_prefrence.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await preferences.init();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.android,
+  );
   await preferences.init();
   // runApp(
   //   DevicePreview(
@@ -42,12 +48,6 @@ void main() async {
   );
   // runApp(const MyApp());
 }
-
-/// Global key for the first showcase widget
-final GlobalKey firstShowcaseWidget = GlobalKey();
-
-/// Global key for the last showcase widget
-final GlobalKey lastShowcaseWidget = GlobalKey();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
