@@ -1,5 +1,6 @@
 import 'package:dropchats/api/repo/auth_repo.dart';
 import 'package:dropchats/constant/app_string.dart';
+import 'package:dropchats/model/GetIntrestModel.dart';
 import 'package:dropchats/model/get_college_list_model.dart';
 import 'package:dropchats/model/response_item.dart';
 import 'package:dropchats/utils/app_snackbar.dart';
@@ -19,10 +20,16 @@ class RegisterController extends GetxController {
   TextEditingController confirmPassController = TextEditingController();
   TextEditingController genderController = TextEditingController();
   TextEditingController dateController = TextEditingController();
+  var selectedGender = ''.obs; // Observable for selected gender
+
+  void setGender(String gender) {
+    selectedGender.value = gender;
+  }
 
   ///verify otp Screen
   TextEditingController confirmationCode = TextEditingController();
   Rx<GetCollegeListModel?> getCollegeListModel = Rx<GetCollegeListModel?>(null);
+  Rx<GetInterestModel?> getInterestModel = Rx<GetInterestModel?>(null);
   RxList<DatumCollegeList> filteredCollegeList = RxList<DatumCollegeList>([]);
   void filterCollegeList(String query) {
     if (query.isEmpty) {
@@ -77,8 +84,22 @@ class RegisterController extends GetxController {
 
   @override
   void onInit() {
-    getCollegeList();
+    getData();
+
     super.onInit();
+  }
+
+  Future<void> getData() async {
+    await getCollegeList();
+    // await getInterestList();
+    // FirebaseMessaging _firebaseMessaging =
+    //     FirebaseMessaging.instance; // Change here
+    // _firebaseMessaging.getToken().then((token) {
+    //   print("token is $token");
+    // });
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    String? deviceToken = await messaging.getToken();
+    print('deviceToken ${deviceToken}');
   }
 
   ///get Collage list
@@ -106,6 +127,43 @@ class RegisterController extends GetxController {
           isLoadingFirstStep.value = false;
         }
       }
+    } catch (e) {
+      print('${e}');
+      isLoadingFirstStep.value = false;
+    } finally {
+      isLoadingFirstStep.value = false;
+    }
+  }
+
+  ///get interest list
+  Future<void> getInterestList() async {
+    isLoadingFirstStep.value = true;
+    ResponseItem result = await AuthRepo.getInterestListRepo();
+
+    debugPrint("GetCollege  api response :::::: ${result.data}");
+    try {
+      if (result.status) {
+        // if (result.data != null) {
+        if (result.data != null && result.data.toString().isNotEmpty) {
+          GetInterestModel getInterestListModels =
+              GetInterestModel.fromJson(result.data);
+          getInterestModel.value = getInterestListModels;
+          isLoadingFirstStep.value = false;
+          debugPrint("getCollegeListModel.value :::::: ${result.data}");
+        } else {
+          showErrorSnackBar("No data available.");
+        }
+        // GetInterestModel getInterestListModels =
+        //     GetInterestModel.fromJson(result.data);
+        // getInterestModel.value = getInterestListModels;
+        //
+      } else {
+        showErrorSnackBar(result.message.toString().isNotEmpty
+            ? result.message.toString()
+            : AppString.somethingWentWrong);
+        isLoadingFirstStep.value = false;
+      }
+      // }
     } catch (e) {
       print('${e}');
       isLoadingFirstStep.value = false;

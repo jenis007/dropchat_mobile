@@ -33,7 +33,7 @@ showErrorSnackBar(String title, {int? duration}) {
         icon: Icons.error_outline,
         color: AppColor.whiteColor,
       ),
-      backgroundColor: Colors.red.withOpacity(0.3),
+      backgroundColor: Colors.red.withOpacity(0.8),
       duration: Duration(seconds: duration ?? 3),
     ),
   );

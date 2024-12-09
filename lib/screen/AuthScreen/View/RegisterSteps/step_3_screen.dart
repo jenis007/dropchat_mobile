@@ -61,13 +61,73 @@ class _Step3ScreenState extends State<Step3Screen> {
                     ),
                   ),
                   AppString.gender.blackPlusJakarta14W400Text(),
+                  // Obx(
+                  //   () => DropdownButtonFormField<String>(
+                  //     decoration: InputDecoration(
+                  //       hintText: 'Select Gender',
+                  //       contentPadding: EdgeInsets.symmetric(horizontal: 16.w),
+                  //       border: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(8.r),
+                  //       ),
+                  //     ),
+                  //     value: controller.selectedGender.value.isEmpty
+                  //         ? null
+                  //         : controller.selectedGender.value,
+                  //     items: ['Male', 'Female']
+                  //         .map((gender) => DropdownMenuItem<String>(
+                  //               value: gender,
+                  //               child: Text(gender),
+                  //             ))
+                  //         .toList(),
+                  //     onChanged: (value) {
+                  //       if (value != null) {
+                  //         controller.setGender(value);
+                  //       }
+                  //     },
+                  //   ),
+                  // ),
                   Padding(
-                    padding: EdgeInsets.only(top: 6.h, bottom: 10.h),
-                    child: AppTextField(
-                      hintText: AppString.selectGender,
-                      controller: controller.genderController,
+                    padding: const EdgeInsets.all(16.0),
+                    child: Obx(
+                      () => DropdownButtonFormField<String>(
+                        value: controller.selectedGender.value.isNotEmpty
+                            ? controller.selectedGender.value
+                            : null,
+                        hint: Text('Select Gender'),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                            borderSide:
+                                const BorderSide(color: AppColor.borderColor),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                            borderSide: const BorderSide(
+                                color: AppColor.borderColor, width: 1),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 10),
+                        ),
+                        items: ['Male', 'Female'].map((String gender) {
+                          return DropdownMenuItem<String>(
+                            value: gender,
+                            child: Text(
+                              gender,
+                              style: TextStyleHelper.greyColor15,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          if (newValue != null) {
+                            controller.setGender(
+                                newValue); // Update the selected gender
+                          }
+                        },
+                      ),
                     ),
                   ),
+
                   AppString.dateBirth.blackPlusJakarta14W400Text(),
                   Padding(
                     padding: EdgeInsets.only(top: 6.h, bottom: 10.h),
@@ -82,14 +142,13 @@ class _Step3ScreenState extends State<Step3Screen> {
                           lastDate: DateTime(2101),
                         );
                         if (selectedDate != null) {
-                          // If the user selected a date, format it and update the controller
                           String formattedDate =
-                              "${selectedDate.day} ${selectedDate.month} ${selectedDate.year}";
+                              "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
                           // Update the controller's text with the selected date
-                          TextEditingController().text = formattedDate;
+                          controller.dateController.text = formattedDate;
                         }
                       },
-                      validator: Validator.birthDateValidator,
+                      // validator: Validator.birthDateValidator,
                       autoValidate: true,
                       hintText: "25 Oct 2010",
                       readonlyShow: true,

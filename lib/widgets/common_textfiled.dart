@@ -19,7 +19,7 @@ class AppTextField extends StatelessWidget {
   final String? Function(String?)? validator; // Validator callback
   final bool? autoValidate; // Auto validation
   final Function(String)? onChanged; // onChanged callback
-  final Function()? onTap;
+  final VoidCallback? onTap;
 
   const AppTextField({
     super.key,
@@ -43,55 +43,55 @@ class AppTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: padding,
-      child: GestureDetector(
-        onTap: onTap,
-        child: TextFormField(
-          readOnly: readonlyShow, // This is now a non-nullable bool
-          obscureText: obscure ?? false,
-          controller: controller,
-          keyboardType: keyBoardType,
-          inputFormatters: [LengthLimitingTextInputFormatter(inputText)],
-          cursorColor: AppColor.lightGreyColor,
-          style: TextStyleHelper.greyColor15,
-          validator: validator, // Add validator here
-          autovalidateMode: autoValidate == true
-              ? AutovalidateMode.onUserInteraction
-              : AutovalidateMode.disabled, // Auto validation mode
-          onChanged: onChanged, // Add onChanged callback here
-          decoration: InputDecoration(
-            fillColor: fillColor ?? Colors.transparent,
-            filled: true,
-            hintText: hintText,
-            hintStyle: TextStyleHelper.lightGreyColor15,
-            contentPadding:
-                EdgeInsets.symmetric(vertical: 15.h, horizontal: 10.w),
-            suffixIcon: suffixIcon,
-            prefixIcon: prefixSvg,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-              borderSide: const BorderSide(
-                color: AppColor.borderColor,
-              ),
+      child: TextFormField(
+        readOnly: readonlyShow, // Ensures no keyboard appears if true
+        onTap: readonlyShow
+            ? onTap
+            : null, // Trigger onTap when readonlyShow is true
+
+        obscureText: obscure ?? false,
+        controller: controller,
+        keyboardType: keyBoardType,
+        inputFormatters: [LengthLimitingTextInputFormatter(inputText)],
+        cursorColor: AppColor.lightGreyColor,
+        style: TextStyleHelper.greyColor15,
+        validator: validator, // Add validator here
+        autovalidateMode: autoValidate == true
+            ? AutovalidateMode.onUserInteraction
+            : AutovalidateMode.disabled, // Auto validation mode
+        onChanged: onChanged, // Add onChanged callback here
+        decoration: InputDecoration(
+          fillColor: fillColor ?? Colors.transparent,
+          filled: true,
+          hintText: hintText,
+          hintStyle: TextStyleHelper.lightGreyColor15,
+          contentPadding:
+              EdgeInsets.symmetric(vertical: 15.h, horizontal: 10.w),
+          suffixIcon: suffixIcon,
+          prefixIcon: prefixSvg,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.r),
+            borderSide: const BorderSide(
+              color: AppColor.borderColor,
             ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-              borderSide: const BorderSide(color: AppColor.borderColor),
-            ),
-            errorStyle: const TextStyle(color: Colors.red),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-              borderSide: const BorderSide(
-                  color: Colors.red, width: 1), // Focused error border
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-              borderSide: const BorderSide(color: Colors.red, width: 1),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-              borderSide:
-                  const BorderSide(color: AppColor.borderColor, width: 1),
-            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.r),
+            borderSide: const BorderSide(color: AppColor.borderColor),
+          ),
+          errorStyle: const TextStyle(color: Colors.red),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.r),
+            borderSide: const BorderSide(
+                color: Colors.red, width: 1), // Focused error border
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.r),
+            borderSide: const BorderSide(color: Colors.red, width: 1),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.r),
+            borderSide: const BorderSide(color: AppColor.borderColor, width: 1),
           ),
         ),
       ),

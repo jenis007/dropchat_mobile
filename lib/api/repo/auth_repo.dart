@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dropchats/api/api_helpers.dart';
 import 'package:dropchats/constant/request_constant.dart';
+import 'package:dropchats/model/GetIntrestModel.dart';
 import 'package:dropchats/model/response_item.dart';
 import 'package:flutter/material.dart';
 
@@ -111,6 +112,17 @@ class AuthRepo {
 
   static Future<ResponseItem> getCollegeListRepo() async {
     String requestUrl = "${AppUrls.baseUrl}${MethodNames.getCollegeList}";
+
+    ResponseItem result = await BaseApiHelper.getRequest(requestUrl);
+
+    debugPrint("SIGNUP - URL===>>>$requestUrl");
+    debugPrint("SIGNUP - RESULT===>>>$result");
+
+    return result;
+  }
+
+  static Future<ResponseItem> getInterestListRepo() async {
+    String requestUrl = "${AppUrls.baseUrl}${MethodNames.getInterest}";
 
     ResponseItem result = await BaseApiHelper.getRequest(requestUrl);
 

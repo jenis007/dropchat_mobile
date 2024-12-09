@@ -1,16 +1,12 @@
 import 'dart:ui';
-
 import 'package:dropchats/constant/app_assets.dart';
 import 'package:dropchats/constant/app_color.dart';
 import 'package:dropchats/constant/app_string.dart';
 import 'package:dropchats/constant/app_textstyle.dart';
 import 'package:dropchats/screen/AuthScreen/controller/register_controller.dart';
 import 'package:dropchats/utils/app_extention.dart';
-import 'package:dropchats/utils/app_routes.dart';
-import 'package:dropchats/widgets/common_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -23,6 +19,12 @@ class Step2Screen extends StatefulWidget {
 
 class _Step2ScreenState extends State<Step2Screen> {
   RegisterController registerController = Get.find();
+  @override
+  void initState() {
+    // registerController.getInterestList();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: GetBuilder<RegisterController>(
@@ -49,7 +51,9 @@ class _Step2ScreenState extends State<Step2Screen> {
                       spacing: 8.0, // Horizontal space between chips
                       runSpacing: 4.0, // Vertical space between lines
                       children: List<Widget>.generate(
-                        registerController.dogeNames.length,
+                        registerController
+                                .getInterestModel.value?.entries.length ??
+                            0,
                         (int index) {
                           bool isSelected =
                               registerController.selectedChips.contains(index);
@@ -84,20 +88,28 @@ class _Step2ScreenState extends State<Step2Screen> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(
-                                        registerController.dogeNames[index],
+                                        registerController
+                                                .getInterestModel
+                                                .value
+                                                ?.entries[index]
+                                                .hashtag ??
+                                            '',
                                         style: isSelected
                                             ? TextStyleHelper
                                                 .whiteColor16 // Selected text color
                                             : TextStyleHelper
                                                 .blackColor15, // Unselected text color
                                       ),
-                                      const SizedBox(
-                                          width:
-                                              5), // Assuming you want 5px spacing
-                                      Image.asset(
-                                        AppAssets.gamingImage,
-                                        height: 18, // Adjust the size as needed
-                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        registerController.getInterestModel
+                                                .value?.entries[index].icon ??
+                                            '',
+                                      ), // Assuming you want 5px spacing
+                                      // Image.asset(
+                                      //   AppAssets.gamingImage,
+                                      //   height: 18, // Adjust the size as needed
+                                      // ),
                                       const SizedBox(width: 5),
                                     ],
                                   ),

@@ -82,10 +82,10 @@ class _HomeScreenState extends State<HomeScreen>
                     totalSteps: 3,
                     description: AppString.secondTip,
                     globalKey: second,
-                    height1: 82.h,
-                    width1: 190.w,
-                    height: 80.h,
-                    width: 270.w,
+                    height1: 115.h,
+                    width1: 210.w,
+                    height: 0.h,
+                    width: 250.w,
                     onNext: () {
                       setState(() {});
                       ShowCaseWidget.of(context).startShowCase([third]);
@@ -105,10 +105,14 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                   SizedBox(height: 5.h),
                   CustomShowcaseWidget(
-                    height1: 82.h,
-                    width1: 190.w,
-                    height: 80.h,
-                    width: 265.w,
+                    // height1: 82.h,
+                    // width1: 190.w,
+                    // height: 80.h,
+                    // width: 265.w,
+                    height1: 115.h,
+                    width1: 210.w,
+                    height: 0.h,
+                    width: 250.w,
                     onFinish: () {
                       setState(() {
                         ShowCaseWidget.of(context).dismiss();
@@ -241,9 +245,9 @@ class _HomeScreenState extends State<HomeScreen>
                           tabs: [
                             Tab(text: AppString.dropLive),
                             CustomShowcaseWidgetTab(
-                              height1: 0.h,
+                              height1: 120.h,
                               width1: 180.w,
-                              height: 0.h,
+                              height: 90.h,
                               width: 160.w,
                               onFinish: () {},
                               currentStep: 1,
@@ -321,77 +325,66 @@ class _CustomShowcaseWidgetState extends State<CustomShowcaseWidget> {
       height: widget.height,
       width: widget.width,
       tooltipPosition: TooltipPosition.bottom,
-      container: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Container(
-            width: widget.width1,
-            decoration: BoxDecoration(
-                color: AppColor.appPrimaryColor,
-                borderRadius: BorderRadius.circular(10)),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
+      container: Container(
+        width: widget.width1,
+        height: widget.height1,
+        decoration: BoxDecoration(
+            // color: AppColor.appPrimaryColor,
+            image: DecorationImage(image: AssetImage(AppAssets.note2)),
+            borderRadius: BorderRadius.circular(10)),
+        child: Padding(
+          padding: EdgeInsets.only(top: 20.h, right: 20.w, left: 15.w),
+          child: Column(
+            children: [
+              Text(
+                widget.description,
+                maxLines: 4,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyleHelper.whiteColor16.copyWith(fontSize: 10.sp),
+              ),
+              SizedBox(
+                height: 6.h,
+              ),
+              Row(
                 children: [
+                  GestureDetector(
+                    onTap: () {
+                      if (widget.currentStep < widget.totalSteps) {
+                        widget.onNext();
+                      } else {
+                        setState(() {
+                          widget.onFinish();
+                          ShowCaseWidget.of(context)
+                              .dismiss(); // Close the showcase
+                        });
+                      }
+                    },
+                    child: Container(
+                      height: 30.h,
+                      width: 55.w,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: AppColor.whiteColor),
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Center(
+                          child: Text(
+                              style: TextStyleHelper.whiteColor16
+                                  .copyWith(fontSize: 10.sp),
+                              widget.currentStep < widget.totalSteps
+                                  ? 'Next'
+                                  : 'Finish')),
+                    ),
+                  ),
+                  const Spacer(),
                   Text(
-                    widget.description,
-                    maxLines: 4,
-                    overflow: TextOverflow.ellipsis,
+                    '${widget.currentStep}/${widget.totalSteps}',
                     style:
                         TextStyleHelper.whiteColor16.copyWith(fontSize: 10.sp),
-                  ),
-                  SizedBox(
-                    height: 6.h,
-                  ),
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          if (widget.currentStep < widget.totalSteps) {
-                            widget.onNext();
-                          } else {
-                            setState(() {
-                              widget.onFinish();
-                              ShowCaseWidget.of(context)
-                                  .dismiss(); // Close the showcase
-                            });
-                          }
-                        },
-                        child: Container(
-                          height: 30.h,
-                          width: 55.w,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: AppColor.whiteColor),
-                              borderRadius: BorderRadius.circular(8)),
-                          child: Center(
-                              child: Text(
-                                  style: TextStyleHelper.whiteColor16
-                                      .copyWith(fontSize: 10.sp),
-                                  widget.currentStep < widget.totalSteps
-                                      ? 'Next'
-                                      : 'Finish')),
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        '${widget.currentStep}/${widget.totalSteps}',
-                        style: TextStyleHelper.whiteColor16
-                            .copyWith(fontSize: 10.sp),
-                      )
-                    ],
                   )
                 ],
-              ),
-            ),
+              )
+            ],
           ),
-          Positioned(
-              left: 176,
-              top: 35.h,
-              child: Image.asset(
-                AppAssets.div,
-                height: 12.h,
-              ))
-        ],
+        ),
       ),
       child: widget.child,
     );
@@ -445,76 +438,68 @@ class _CustomShowcaseWidgetTabState extends State<CustomShowcaseWidgetTab> {
         padding: const EdgeInsets.only(
           right: 20,
         ),
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Container(
-              width: widget.width1,
-              decoration: BoxDecoration(
-                  color: AppColor.appPrimaryColor,
-                  borderRadius: BorderRadius.circular(10)),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
+        child: Container(
+          width: widget.width1,
+          height: widget.height1,
+          decoration: BoxDecoration(
+              // color: AppColor.appPrimaryColor,
+              image: DecorationImage(image: AssetImage(AppAssets.note1)),
+              borderRadius: BorderRadius.circular(10)),
+          child: Padding(
+            padding: EdgeInsets.only(top: 15.h, right: 10.w, left: 10.w),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Flexible(
+                  child: Text(
+                    widget.description,
+                    maxLines: 4,
+                    overflow: TextOverflow.ellipsis,
+                    style:
+                        TextStyleHelper.whiteColor16.copyWith(fontSize: 10.sp),
+                  ),
+                ),
+                SizedBox(
+                  height: 6.h,
+                ),
+                Row(
                   children: [
+                    GestureDetector(
+                      onTap: () {
+                        if (widget.currentStep < widget.totalSteps) {
+                          setState(() {
+                            widget.onNext();
+                          });
+                        } else {
+                          widget.onFinish();
+                        }
+                      },
+                      child: Container(
+                        height: 30.h,
+                        width: 55.w,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: AppColor.whiteColor),
+                            borderRadius: BorderRadius.circular(8)),
+                        child: Center(
+                            child: Text(
+                                style: TextStyleHelper.whiteColor16
+                                    .copyWith(fontSize: 10.sp),
+                                widget.currentStep < widget.totalSteps
+                                    ? 'Next'
+                                    : 'Finish')),
+                      ),
+                    ),
+                    const Spacer(),
                     Text(
-                      widget.description,
-                      maxLines: 4,
-                      overflow: TextOverflow.ellipsis,
+                      '${widget.currentStep}/${widget.totalSteps}',
                       style: TextStyleHelper.whiteColor16
                           .copyWith(fontSize: 10.sp),
-                    ),
-                    SizedBox(
-                      height: 6.h,
-                    ),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            if (widget.currentStep < widget.totalSteps) {
-                              setState(() {
-                                widget.onNext();
-                              });
-                            } else {
-                              widget.onFinish();
-                            }
-                          },
-                          child: Container(
-                            height: 30.h,
-                            width: 55.w,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: AppColor.whiteColor),
-                                borderRadius: BorderRadius.circular(8)),
-                            child: Center(
-                                child: Text(
-                                    style: TextStyleHelper.whiteColor16
-                                        .copyWith(fontSize: 10.sp),
-                                    widget.currentStep < widget.totalSteps
-                                        ? 'Next'
-                                        : 'Finish')),
-                          ),
-                        ),
-                        const Spacer(),
-                        Text(
-                          '${widget.currentStep}/${widget.totalSteps}',
-                          style: TextStyleHelper.whiteColor16
-                              .copyWith(fontSize: 10.sp),
-                        )
-                      ],
                     )
                   ],
-                ),
-              ),
+                )
+              ],
             ),
-            Positioned(
-                right: 0,
-                left: 0,
-                bottom: 114.h,
-                child: Image.asset(
-                  AppAssets.divIcon,
-                  height: 6.h,
-                ))
-          ],
+          ),
         ),
       ),
       child: widget.child,

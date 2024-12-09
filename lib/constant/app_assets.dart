@@ -31,6 +31,8 @@ class AppAssets {
   static const bottomDropchat = "${imagePath}bottom_dropchat.png";
   static const dummyProfile = "${imagePath}dummy_profile.jpeg";
   static const dropChat = "${imagePath}dropchat_logo.png";
+  static const note1 = "${imagePath}Note.png";
+  static const note2 = "${imagePath}Note2.png";
 
   ///private chat
   static const dropchatImage = "${imagePath}dropchat_image.png";

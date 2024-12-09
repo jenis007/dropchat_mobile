@@ -1,6 +1,5 @@
 class AppUrls {
   static const baseUrl = "https://dev.dropchats.one/api/";
-  static const matchBaseUrl = "https://degeneratesodds.sataware.dev:5000";
 }
 
 class MethodNames {
@@ -13,4 +12,5 @@ class MethodNames {
   static const profileUpdate = "profile-update";
   static const getProfile = "get-profile/";
   static const getCollegeList = "university";
+  static const getInterest = "interests";
 }
