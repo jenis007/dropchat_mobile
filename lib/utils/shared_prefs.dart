@@ -16,7 +16,7 @@ class SharedPreference {
 
   static const isLogin = "isLogin";
   static const userEmail = "userEmail";
-  static const userId = "userId";
+
   static const googleId = "googleId";
   static const appleId = "appleId";
   static const fb_id = "fb_id";
@@ -26,28 +26,39 @@ class SharedPreference {
   static const userData = "userData";
   static const userState = "userState";
   static const userCity = "userCity";
-  static const token = "token";
-  static const password = "password";
+
+  // static const password = "password";
   static const ACCESS_TOKEN = "ACCESS_TOKEN";
+
+  /// dropchat data
+  static const competedRegister = "registration_status";
+  static const token = "token";
+  static const birthdate = "birthdate";
+  static const countryCode = "country_code";
+  static const email = "email";
+  static const phone = "phone";
+  static const sex = "sex";
+  static const username = "username";
+  static const password = "password";
+  static const userId = "id";
   static const deviceToken = "deviceToken";
 
   void saveUserData(UserData userData) {
-    preferences.putString(SharedPreference.userEmail, userData.email ?? "NA");
+    preferences.putString(SharedPreference.email, userData.email ?? "NA");
     preferences.putString(SharedPreference.userId, userData.id.toString());
     preferences.putString(
-        SharedPreference.userImage, userData.imageUrl ?? "NA");
-    preferences.putString(SharedPreference.lastName, userData.lastname ?? "NA");
+        SharedPreference.competedRegister, userData.competedRegister ?? "NA");
+    preferences.putString(SharedPreference.token, userData.token ?? "NA");
     preferences.putString(
-        SharedPreference.firstName, userData.firstname ?? "NA");
-    preferences.putString(SharedPreference.userState, userData.country ?? "NA");
-    preferences.putString(SharedPreference.userCity, userData.city ?? "NA");
+        SharedPreference.birthdate, userData.birthdate ?? "NA");
     preferences.putString(
-        SharedPreference.googleId, userData.google_id ?? "NA");
-    preferences.putString(SharedPreference.appleId, userData.apple_id ?? "NA");
-    preferences.putString(SharedPreference.fb_id, userData.fb_id ?? "NA");
+        SharedPreference.countryCode, userData.countryCode ?? "NA");
+    preferences.putString(SharedPreference.phone, userData.phone ?? "NA");
+    preferences.putString(SharedPreference.sex, userData.sex ?? "NA");
+    preferences.putString(SharedPreference.username, userData.username ?? "NA");
+    preferences.putString(SharedPreference.password, userData.password ?? "NA");
     preferences.putString(
         SharedPreference.deviceToken, userData.device_token ?? "NA");
-    preferences.putString(SharedPreference.userData, jsonEncode(userData));
   }
 
   logOut() async {

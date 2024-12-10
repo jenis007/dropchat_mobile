@@ -103,4 +103,11 @@ class Validator {
       return "Please enter a valid birthdate (e.g., 23 Oct 2010)";
     }
   }
+
+  static bool isEmail(String input) {
+    // Simple regex to check if input is a valid email
+    final emailRegex =
+        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$');
+    return emailRegex.hasMatch(input);
+  }
 }

@@ -51,6 +51,8 @@ dependencies:
   firebase_auth:
   change_app_package_name: ^1.4.0
   firebase_messaging:
+  animated_weight_picker: ^1.0.3
+
 
 
 

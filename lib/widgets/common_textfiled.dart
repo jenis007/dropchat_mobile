@@ -20,6 +20,7 @@ class AppTextField extends StatelessWidget {
   final bool? autoValidate; // Auto validation
   final Function(String)? onChanged; // onChanged callback
   final VoidCallback? onTap;
+  final void Function(String)? onTapSubmited; // Change to Function(String)?
 
   const AppTextField({
     super.key,
@@ -37,6 +38,7 @@ class AppTextField extends StatelessWidget {
     this.onChanged,
     this.readonlyShow = false,
     this.onTap, // Initialize onTap// Default to false
+    this.onTapSubmited, // Initialize onTap// Default to false
   });
 
   @override
@@ -44,6 +46,7 @@ class AppTextField extends StatelessWidget {
     return Padding(
       padding: padding,
       child: TextFormField(
+        onFieldSubmitted: onTapSubmited,
         readOnly: readonlyShow, // Ensures no keyboard appears if true
         onTap: readonlyShow
             ? onTap

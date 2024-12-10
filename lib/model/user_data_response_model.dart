@@ -1,11 +1,16 @@
 class UserData {
   int? id;
+  String? token;
+  String? birthdate;
+  String? competedRegister;
+  dynamic username;
+  String? email;
+  String? password;
+  String? sex;
+  dynamic phone;
   String? firstname;
   String? lastname;
   String? name;
-  dynamic username;
-  String? email;
-  dynamic mobile;
   dynamic emailVerifiedAt;
   String? tfver;
   String? emailv;
@@ -43,10 +48,12 @@ class UserData {
     this.id,
     this.firstname,
     this.lastname,
+    this.sex,
     this.name,
+    this.password,
     this.username,
     this.email,
-    this.mobile,
+    this.phone,
     this.emailVerifiedAt,
     this.tfver,
     this.emailv,
@@ -79,16 +86,24 @@ class UserData {
     this.google_id,
     this.apple_id,
     this.device_token,
+    this.competedRegister,
+    this.token,
+    this.birthdate,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) => UserData(
         id: json["id"],
+        competedRegister: json["registration_status"],
+        token: json["token"],
+        sex: json["sex"],
         firstname: json["firstname"],
+        birthdate: json["birthdate"],
         lastname: json["lastname"],
         name: json["name"] ?? "",
+        password: json["password"] ?? "",
         username: json["username"],
         email: json["email"] ?? "",
-        mobile: json["mobile"],
+        phone: json["phone"],
         emailVerifiedAt: json["email_verified_at"],
         tfver: json["tfver"] ?? "",
         emailv: json["emailv"] ?? "",
@@ -98,7 +113,7 @@ class UserData {
         address: json["address"] ?? "",
         zipCode: json["zip_code"],
         city: json["city"],
-        countryCode: json["country_code"],
+        countryCode: json["countryCode"],
         country: json["country"],
         vsent: json["vsent"],
         secretcode: json["secretcode"] ?? "",
@@ -129,12 +144,17 @@ class UserData {
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "token": token,
+        "birthdate": birthdate,
+        "password": password,
+        "sex": sex,
+        "registration_status": competedRegister,
         "firstname": firstname,
         "lastname": lastname,
         "name": name,
         "username": username,
         "email": email,
-        "mobile": mobile,
+        "phone": phone,
         "email_verified_at": emailVerifiedAt,
         "tfver": tfver,
         "emailv": emailv,
@@ -144,7 +164,7 @@ class UserData {
         "address": address,
         "zip_code": zipCode,
         "city": city,
-        "country_code": countryCode,
+        "countryCode": countryCode,
         "country": country,
         "vsent": vsent,
         "secretcode": secretcode,

@@ -106,6 +106,11 @@ class _Step1ScreenState extends State<Step1Screen> {
                                     registerController
                                         .currentIndexSelectedJoinCampus
                                         .value = index;
+                                    registerController.univerCityId.value =
+                                        collegeList[index].id.toString();
+                                    print(
+                                        'registerController.univerCityId.value${registerController.univerCityId.value}');
+                                    controller.update();
                                   },
                                   child: Obx(() {
                                     return Container(

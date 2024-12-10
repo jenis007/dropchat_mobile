@@ -87,6 +87,9 @@ class AppAssets {
   static const congrats = "${iconPath}congrats.svg";
   static const pinMap = "${iconPath}pin_map.svg";
   static const scanIcon = "${iconPath}scaner_icon.svg";
+
+  static const imag1 = "${imagePath}Circle.png";
+  static const point = "${imagePath}Point.png";
 }
 
 Widget appIcon({required IconData icon, double? size, Color? color}) {

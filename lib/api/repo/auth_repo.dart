@@ -11,13 +11,13 @@ class AuthRepo {
 
   static Future<ResponseItem> signUpRepo(
       {required Map<String, dynamic> requestData}) async {
-    String requestUrl = "${AppUrls.baseUrl}${MethodNames.register}";
+    String requestUrl = "${AppUrls.baseUrl}${MethodNames.user}";
 
     ResponseItem result =
         await BaseApiHelper.postRequest(requestUrl, requestData);
 
     debugPrint("SIGNUP - URL===>>>$requestUrl");
-    debugPrint("SIGNUP - RESULT===>>>$result");
+    debugPrint("SIGNUP - RESULT===>>>${result}");
 
     return result;
   }
@@ -26,7 +26,7 @@ class AuthRepo {
 
   static Future<ResponseItem> loginRepo(
       {required Map<String, dynamic> requestData}) async {
-    String requestUrl = "${AppUrls.baseUrl}${MethodNames.login}";
+    String requestUrl = "${AppUrls.baseUrl}${MethodNames.authToken}";
 
     ResponseItem result =
         await BaseApiHelper.postRequest(requestUrl, requestData);
@@ -125,6 +125,19 @@ class AuthRepo {
     String requestUrl = "${AppUrls.baseUrl}${MethodNames.getInterest}";
 
     ResponseItem result = await BaseApiHelper.getRequest(requestUrl);
+
+    debugPrint("SIGNUP - URL===>>>$requestUrl");
+    debugPrint("SIGNUP - RESULT===>>>$result");
+
+    return result;
+  }
+
+  static Future<ResponseItem> searchUseNameRepo(
+      {required Map<String, dynamic> requestData}) async {
+    String requestUrl = "${AppUrls.baseUrl}${MethodNames.searchUseName}";
+
+    ResponseItem result =
+        await BaseApiHelper.postRequest(requestUrl, requestData);
 
     debugPrint("SIGNUP - URL===>>>$requestUrl");
     debugPrint("SIGNUP - RESULT===>>>$result");
