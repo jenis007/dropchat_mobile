@@ -8,13 +8,18 @@ import 'package:dropchats/screen/AuthScreen/View/RegisterSteps/step_3_screen.dar
 import 'package:dropchats/screen/AuthScreen/View/RegisterSteps/verify_otp_screen.dart';
 import 'package:dropchats/screen/AuthScreen/controller/auth_controller.dart';
 import 'package:dropchats/screen/AuthScreen/controller/register_controller.dart';
+import 'package:dropchats/utils/app_extention.dart';
 import 'package:dropchats/utils/app_routes.dart';
 import 'package:dropchats/utils/app_snackbar.dart';
+import 'package:dropchats/widgets/app_lodingButton.dart';
 import 'package:dropchats/widgets/common_button.dart';
+import 'package:dropchats/widgets/rounded_loading_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:loading_btn/loading_btn.dart';
 
 class RegisterStepsScreen extends StatefulWidget {
   const RegisterStepsScreen({super.key});
@@ -97,162 +102,198 @@ class _RegisterStepsScreenState extends State<RegisterStepsScreen> {
                     },
                   ),
                 ),
-                Obx(
-                  () {
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                            right: 24.w,
-                            left: 14.w,
-                          ),
-                          child: (controller.currentPage == 0 &&
-                                  registerController.getCollegeListModel.value
-                                          ?.data.length !=
-                                      null)
-                              ? CommonButton(
-                                  onTap: () {
-                                    if (registerController
-                                        .univerCityId.isNotEmpty) {
-                                      controller.pageController.nextPage(
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        curve: Curves.ease,
-                                      );
-                                      registerController.passData.addAll({
-                                        'univerCiti_id': registerController
-                                                .univerCityId
-                                                .toString() ??
-                                            ''
-                                      });
-                                      print(
-                                          'registerController.passData${registerController.passData}');
-                                    } else {
-                                      showErrorSnackBar(
-                                          'please Select university');
-                                    }
+                Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                        right: 24.w,
+                        left: 14.w,
+                      ),
+                      child: (controller.currentPage == 0)
+                          ? CommonButton(
+                              onTap: () {
+                                if (registerController
+                                    .univerCityId.isNotEmpty) {
+                                  controller.pageController.nextPage(
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.ease,
+                                  );
+                                  registerController.passData.addAll({
+                                    'univerCiti_id': registerController
+                                            .univerCityId
+                                            .toString() ??
+                                        ''
+                                  });
+                                  print(
+                                      'registerController.passData${registerController.passData}');
+                                } else {
+                                  showErrorSnackBar('please Select university');
+                                }
+                              },
+                              title: AppString.next,
+                              buttonColor: AppColor.appPrimaryColor,
+                              textColor: AppColor.primaryLightColor,
+                            )
+                          : controller.currentPage == 1
+                              ? RoundedLoadingButton(
+                                  elevation: 0,
+                                  shadowsColor: Colors.transparent,
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 48.h,
+                                  borderRadius: 8.r,
+                                  color: AppColor.appPrimaryColor,
+                                  controller: registerController.btnController,
+                                  onPressed: () async {
+                                    // if (registerController
+                                    //     .formKeyStep3.currentState!
+                                    //     .validate()) {
+                                    //   if (registerController
+                                    //       .selectedGender.value.isEmpty) {
+                                    //     showErrorSnackBar(
+                                    //         'please select your gender');
+                                    //     registerController.btnErrorPhone();
+                                    //   } else if (registerController
+                                    //       .dateController.text.isEmpty) {
+                                    //     showErrorSnackBar(
+                                    //         'please select your BirthDate');
+                                    //     registerController.btnErrorPhone();
+                                    //   } else {
+                                    //     if (registerController
+                                    //                 .matchUserName.value ==
+                                    //             false &&
+                                    //         (registerController
+                                    //                     .matchUserEmail.value ==
+                                    //                 false ||
+                                    //             registerController
+                                    //                     .matchUserPhone.value ==
+                                    //                 false)) {
+                                    //       await registerController
+                                    //           .userRegisterData(() async {
+                                    //         await registerController
+                                    //             .userRegister();
+                                    //         controller.pageController.nextPage(
+                                    //           duration: const Duration(
+                                    //               milliseconds: 300),
+                                    //           curve: Curves.ease,
+                                    //         );
+                                    //       });
+                                    //     }
+                                    //   }
+                                    // } else {
+                                    //   showErrorSnackBar(
+                                    //       'please select another name ');
+                                    // }
+                                    // registerController.btnErrorPhone();
+                                    registerController.btnErrorPhone();
+                                    controller.pageController.nextPage(
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      curve: Curves.ease,
+                                    );
                                   },
-                                  title: AppString.next,
-                                  buttonColor: AppColor.appPrimaryColor,
-                                  textColor: AppColor.primaryLightColor,
+                                  child: Text(
+                                    AppString.createProfile,
+                                    style: TextStyleHelper.primaryLightColor16
+                                        .copyWith(
+                                            color: AppColor.whiteColor,
+                                            decoration: TextDecoration.none),
+                                  ),
                                 )
-                              : controller.currentPage == 1
-                                  ? CommonButton(
-                                      onTap: () async {
-                                        if (registerController
-                                            .formKeyStep3.currentState!
-                                            .validate()) {
-                                          if (registerController
-                                              .selectedGender.value.isEmpty) {
-                                            showErrorSnackBar(
-                                                'please select your gender');
-                                          } else if (registerController
-                                              .dateController.text.isEmpty) {
-                                            showErrorSnackBar(
-                                                'please select your BirthDate');
-                                          } else {
-                                            if (registerController
-                                                        .matchUserName.value ==
-                                                    false &&
-                                                (registerController
-                                                            .matchUserEmail
-                                                            .value ==
-                                                        false ||
-                                                    registerController
-                                                            .matchUserPhone
-                                                            .value ==
-                                                        false)) {
-                                              await registerController
-                                                  .userRegisterData();
-                                              await registerController
-                                                  .userRegister();
-                                            }
-                                            // controller.pageController.nextPage(
-                                            //   duration: const Duration(
-                                            //       milliseconds: 300),
-                                            //   curve: Curves.ease,
-                                            // );
+                              : controller.currentPage == 2
+                                  ? RoundedLoadingButton(
+                                      elevation: 0,
+                                      shadowsColor: Colors.transparent,
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 48.h,
+                                      borderRadius: 8.r,
+                                      color: AppColor.appPrimaryColor,
+                                      controller:
+                                          registerController.btnControlleverir,
+                                      onPressed: () async {
+                                        registerController.btnControlleverir
+                                            .reset();
+                                        controller.pageController.nextPage(
+                                          duration:
+                                              const Duration(milliseconds: 300),
+                                          curve: Curves.ease,
+                                        );
 
-                                            print('jsdnkjsdn');
-                                          }
-                                        }
+                                        // if (registerController
+                                        //     .formKeyOtp.currentState!
+                                        //     .validate()) {
+                                        //   registerController
+                                        //       .userOtpVerification();
+                                        //   // controller.pageController.nextPage(
+                                        //   //   duration: const Duration(
+                                        //   //       milliseconds: 300),
+                                        //   //   curve: Curves.ease,
+                                        //   // );
+                                        // }
+                                        registerController.btnControlleverir
+                                            .error();
+                                        registerController.btnControlleverir
+                                            .reset();
                                       },
-                                      title: AppString.createProfile,
+                                      child: Text(
+                                        AppString.verify,
+                                        style: TextStyleHelper
+                                            .primaryLightColor16
+                                            .copyWith(
+                                                color: AppColor.whiteColor,
+                                                decoration:
+                                                    TextDecoration.none),
+                                      ),
+                                    )
+                                  : CommonButton(
+                                      onTap: () {
+                                        if (registerController
+                                                .selectedChips.length !=
+                                            6) {
+                                          showErrorSnackBar(AppString.stp3);
+                                        } else {
+                                          print('jsdnkjsdn');
+                                          Get.toNamed(
+                                            Routes.homeScreen,
+                                          );
+                                          // controller.pageController.nextPage(
+                                          //   duration: const Duration(milliseconds: 300),
+                                          //   curve: Curves.ease,
+                                          // );
+                                        }
+
+                                        // Handle last step, final submit, etc.
+                                      },
+                                      title: AppString
+                                          .createProfile, // Change text for last page
                                       buttonColor: AppColor.appPrimaryColor,
                                       textColor: AppColor.primaryLightColor,
-                                    )
-                                  : controller.currentPage == 2
-                                      ? CommonButton(
-                                          onTap: () async {
-                                            if (registerController
-                                                .formKeyOtp.currentState!
-                                                .validate()) {
-                                              // controller.pageController.nextPage(
-                                              //   duration: const Duration(
-                                              //       milliseconds: 300),
-                                              //   curve: Curves.ease,
-                                              // );
-                                            }
-                                          },
-                                          title: 'Verify',
-                                          buttonColor: AppColor.appPrimaryColor,
-                                          textColor: AppColor.primaryLightColor,
-                                        )
-                                      : CommonButton(
-                                          onTap: () {
-                                            Get.toNamed(
-                                              Routes.verifyScreen,
-                                            );
-                                            // if (registerController.selectedChips.length !=
-                                            //     4) {
-                                            //   showErrorSnackBar(AppString.stp3);
-                                            // } else {
-                                            //   controller.pageController.nextPage(
-                                            //     duration: const Duration(milliseconds: 300),
-                                            //     curve: Curves.ease,
-                                            //   );
-                                            // }
-                                            // if (registerController
-                                            //     .formKeyStep3.currentState!
-                                            //     .validate()) {
-                                            //
-                                            //   print('jsdnkjsdn');
-                                            // }
-                                            // Handle last step, final submit, etc.
-                                          },
-                                          title: AppString
-                                              .createProfile, // Change text for last page
-                                          buttonColor: AppColor.appPrimaryColor,
-                                          textColor: AppColor.primaryLightColor,
-                                        ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Get.toNamed(Routes.singInScreen);
-                          },
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: 9.h, left: 15.w, bottom: 70.h),
-                              child: RichText(
-                                text: TextSpan(
-                                  text: AppString.alreadyHaveAccount,
-                                  style: TextStyleHelper.blackColor15
-                                      .copyWith(fontSize: AppFontSize.font12),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text: AppString.singIn,
-                                        style: TextStyleHelper.primaryColor12),
-                                  ],
-                                ),
-                              ),
+                                    ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(Routes.singInScreen);
+                      },
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              top: 9.h, left: 15.w, bottom: 70.h),
+                          child: RichText(
+                            text: TextSpan(
+                              text: AppString.alreadyHaveAccount,
+                              style: TextStyleHelper.blackColor15
+                                  .copyWith(fontSize: AppFontSize.font12),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: AppString.singIn,
+                                    style: TextStyleHelper.primaryColor12),
+                              ],
                             ),
                           ),
-                        )
-                      ],
-                    );
-                  },
+                        ),
+                      ),
+                    )
+                  ],
                 )
               ],
             ),

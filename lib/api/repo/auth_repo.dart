@@ -4,6 +4,7 @@ import 'package:dropchats/api/api_helpers.dart';
 import 'package:dropchats/constant/request_constant.dart';
 import 'package:dropchats/model/GetIntrestModel.dart';
 import 'package:dropchats/model/response_item.dart';
+import 'package:dropchats/utils/shared_prefs.dart';
 import 'package:flutter/material.dart';
 
 class AuthRepo {
@@ -27,6 +28,20 @@ class AuthRepo {
   static Future<ResponseItem> loginRepo(
       {required Map<String, dynamic> requestData}) async {
     String requestUrl = "${AppUrls.baseUrl}${MethodNames.authToken}";
+
+    ResponseItem result =
+        await BaseApiHelper.postRequest(requestUrl, requestData);
+
+    debugPrint("LOGIN - URL===>>>$requestUrl");
+    debugPrint("LOGIN - RESULT===>>>$result");
+
+    return result;
+  }
+
+  ///otp verification
+  static Future<ResponseItem> otpVerification(
+      {required Map<String, dynamic> requestData}) async {
+    String requestUrl = "${AppUrls.baseUrl}${MethodNames.otpVerification}";
 
     ResponseItem result =
         await BaseApiHelper.postRequest(requestUrl, requestData);
@@ -123,8 +138,24 @@ class AuthRepo {
 
   static Future<ResponseItem> getInterestListRepo() async {
     String requestUrl = "${AppUrls.baseUrl}${MethodNames.getInterest}";
+    String dad = preferences.getString(SharedPreference.token) ?? '';
+    print('daddaddaddad${dad}');
+    ResponseItem result =
+        await BaseApiHelper.getRequest(requestUrl, passAuthToken: true);
 
-    ResponseItem result = await BaseApiHelper.getRequest(requestUrl);
+    debugPrint("SIGNUP - URL===>>>$requestUrl");
+    debugPrint("SIGNUP - RESULT===>>>$result");
+
+    return result;
+  }
+
+  static Future<ResponseItem> userInterestSelect(
+      {required Map<String, dynamic> requestData}) async {
+    String requestUrl = "${AppUrls.baseUrl}${MethodNames.userInterestsSelect}";
+
+    ResponseItem result = await BaseApiHelper.postRequest(
+        requestUrl, requestData,
+        passAuthToken: true);
 
     debugPrint("SIGNUP - URL===>>>$requestUrl");
     debugPrint("SIGNUP - RESULT===>>>$result");

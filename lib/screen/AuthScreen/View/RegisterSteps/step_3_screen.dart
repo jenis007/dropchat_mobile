@@ -96,7 +96,7 @@ class _Step3ScreenState extends State<Step3Screen> {
                                 showErrorSnackBar(
                                     "Phone is already taken. Please choose another one.");
                               } else {
-                                print('Username is available');
+                                // print('Username is available');
                               }
                             }
                           },

@@ -13,6 +13,6 @@ Map<String, String> requestHeader(passAuthToken) {
     "Content-Type": "application/json",
     if (passAuthToken == true)
       "Authorization":
-          "Bearer ${preferences.getString(SharedPreference.ACCESS_TOKEN)}",
+          "Bearer ${preferences.getString(SharedPreference.token)}",
   };
 }

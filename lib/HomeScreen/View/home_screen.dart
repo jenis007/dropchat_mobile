@@ -14,6 +14,8 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 
+import '../../utils/shared_prefs.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -32,11 +34,13 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    // checkFirstTime();
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => ShowCaseWidget.of(context)
-          .startShowCase([_tabBarShowcaseKey, second, third]),
-    );
+    checkFirstTime();
+    bool sss = preferences.getBool(SharedPreference.isLogin) ?? false;
+    print('sssssssssssssssssssssssssssssssss${sss}');
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //   (_) => ShowCaseWidget.of(context)
+    //       .startShowCase([_tabBarShowcaseKey, second, third]),
+    // );
     homeController.tabController = TabController(length: 3, vsync: this);
   }
 

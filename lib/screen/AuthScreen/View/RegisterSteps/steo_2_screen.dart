@@ -5,6 +5,7 @@ import 'package:dropchats/constant/app_string.dart';
 import 'package:dropchats/constant/app_textstyle.dart';
 import 'package:dropchats/screen/AuthScreen/controller/register_controller.dart';
 import 'package:dropchats/utils/app_extention.dart';
+import 'package:dropchats/utils/app_snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +22,7 @@ class _Step2ScreenState extends State<Step2Screen> {
   RegisterController registerController = Get.find();
   @override
   void initState() {
-    // registerController.getInterestList();
+    registerController.getInterestList();
     super.initState();
   }
 
@@ -61,13 +62,34 @@ class _Step2ScreenState extends State<Step2Screen> {
                           return Padding(
                             padding: const EdgeInsets.all(5),
                             child: GestureDetector(
-                              onTap: () {
-                                // Toggle the selected state of the chip
+                              onTap: () async {
                                 if (isSelected) {
+                                  // Remove the chip from the selected list
                                   registerController.selectedChips
                                       .remove(index);
                                 } else {
+                                  // Optimistically select the interest
                                   registerController.selectedChips.add(index);
+
+                                  // Call the API
+                                  int selectedId = registerController
+                                      .getInterestModel.value!.entries[index].id
+                                      .toInt();
+                                  bool apiSuccess = await registerController
+                                      .getInterestSelect(selectedId);
+
+                                  // If the API call fails, unselect the interest
+                                  if (!apiSuccess) {
+                                    registerController.selectedChips
+                                        .remove(index);
+                                    registerController
+                                        .update(); // Notify the UI to rebuild
+                                    showErrorSnackBar(
+                                        "Failed to select interest. Please try again.");
+                                  } else {
+                                    registerController
+                                        .update(); // Update UI if needed for success
+                                  }
                                 }
                               },
                               child: Container(

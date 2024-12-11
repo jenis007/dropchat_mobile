@@ -10,12 +10,14 @@ import 'package:dropchats/screen/chat/insidechat_screen.dart';
 import 'package:dropchats/screen/chat/chat_screen.dart';
 import 'package:dropchats/screen/community/Community_screen.dart';
 import 'package:dropchats/screen/profile/profile_screen.dart';
+import 'package:dropchats/screen/splash_screen.dart';
 
 import 'package:get/get.dart';
 
 import '../screen/AuthScreen/View/RegisterSteps/register_steps_screen.dart';
 
 class Routes {
+  static String splashScreen = "/";
   static String onBoarding = "/onBoarding";
   static String registerStepsScreen = "/registerStepsScreen";
   static String homeScreen = "/homeScreen";
@@ -30,6 +32,10 @@ class Routes {
   static String step3Screen = "/step3Screen";
 
   static List<GetPage> routes = [
+    GetPage(
+      name: splashScreen,
+      page: () => SplashScreen(),
+    ),
     GetPage(
       name: onBoarding,
       page: () => const OnBoardingScreen(),

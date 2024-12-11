@@ -8,6 +8,8 @@ import 'package:dropchats/screen/community/controller/communtity_controller.dart
 import 'package:dropchats/screen/profile/controller/profile_controller.dart';
 import 'package:dropchats/services/Firebase/firebase_options.dart';
 import 'package:dropchats/utils/screen_size.dart';
+import 'package:dropchats/utils/shared_prefs.dart';
+import 'package:dropchats/utils/socket_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,7 +19,6 @@ import 'package:showcaseview/showcaseview.dart';
 import 'screen/AuthScreen/controller/auth_controller.dart';
 import 'screen/chat/controller/chat_controller.dart';
 import 'utils/app_routes.dart';
-import 'utils/shared_prefrence.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,6 +62,7 @@ class MyApp extends StatelessWidget {
       useInheritedMediaQuery: true,
       rebuildFactor: (old, data) => true,
       builder: (context, child) {
+        Get.put(SocketService());
         ScreenSize.init(context);
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(
@@ -72,7 +74,7 @@ class MyApp extends StatelessWidget {
             title: 'dropChats',
             theme: ThemeData(fontFamily: "Plus Jakarta Sans"),
             initialBinding: BaseBinding(),
-            initialRoute: Routes.onBoarding,
+            initialRoute: Routes.splashScreen,
             getPages: Routes.routes,
           ),
         );

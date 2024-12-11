@@ -8,9 +8,9 @@ class Validator {
     }
 
     // Check if the username contains '@' symbol
-    if (!value.contains('@')) {
-      return "Username must contain '@'";
-    }
+    // if (!value.contains('@')) {
+    //   return "Username must contain '@'";
+    // }
 
     // Optional: Check for a minimum length requirement
     if (value.length < 5) {

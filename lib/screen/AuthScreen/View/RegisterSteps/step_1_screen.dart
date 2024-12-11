@@ -19,7 +19,7 @@ class Step1Screen extends StatefulWidget {
 
 class _Step1ScreenState extends State<Step1Screen> {
   RegisterController registerController = Get.find();
-
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(

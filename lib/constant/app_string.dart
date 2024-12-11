@@ -92,7 +92,7 @@ class AppString {
       "''Scan a QR code at a party and wait for a notification to shake your phone and win Instant Prizes.''";
 
   ///validations Strings
-  static const stp3 = "Choose 3+ topics to join Your circle";
+  static const stp3 = "Choose 5 topics to join Your circle";
 
   static const somethingWentWrong = "Something went wrong";
   static const serverError = "Server Error";

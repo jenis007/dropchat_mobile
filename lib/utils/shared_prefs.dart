@@ -1,11 +1,12 @@
 import 'dart:convert';
-import 'package:dropchats/model/user_data_response_model.dart';
+import 'dart:developer';
+
+import 'package:dropchats/model/SingUp_model.dart';
 import 'package:dropchats/screen/AuthScreen/controller/auth_controller.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final preferences = SharedPreference();
-AuthController authController = Get.find();
 
 class SharedPreference {
   static SharedPreferences? _preferences;
@@ -31,7 +32,7 @@ class SharedPreference {
   static const ACCESS_TOKEN = "ACCESS_TOKEN";
 
   /// dropchat data
-  static const competedRegister = "registration_status";
+  static const competedRegister = "isLogin";
   static const token = "token";
   static const birthdate = "birthdate";
   static const countryCode = "country_code";
@@ -46,9 +47,9 @@ class SharedPreference {
   void saveUserData(UserData userData) {
     preferences.putString(SharedPreference.email, userData.email ?? "NA");
     preferences.putString(SharedPreference.userId, userData.id.toString());
-    preferences.putString(
-        SharedPreference.competedRegister, userData.competedRegister ?? "NA");
-    preferences.putString(SharedPreference.token, userData.token ?? "NA");
+    // preferences.putString(
+    //     SharedPreference.competedRegister, userData.isLogin ?? "NA");
+    // preferences.putString(SharedPreference.token, userData.token ?? "NA");
     preferences.putString(
         SharedPreference.birthdate, userData.birthdate ?? "NA");
     preferences.putString(
@@ -56,10 +57,53 @@ class SharedPreference {
     preferences.putString(SharedPreference.phone, userData.phone ?? "NA");
     preferences.putString(SharedPreference.sex, userData.sex ?? "NA");
     preferences.putString(SharedPreference.username, userData.username ?? "NA");
-    preferences.putString(SharedPreference.password, userData.password ?? "NA");
-    preferences.putString(
-        SharedPreference.deviceToken, userData.device_token ?? "NA");
+    preferences.putString(SharedPreference.userData, jsonEncode(userData));
+    // preferences.putString(SharedPreference.password, userData.password ?? "NA");
+    // preferences.putString(
+    //     SharedPreference.deviceToken, userData.device_token ?? "NA");
   }
+
+  // UserData? userDatas;
+  // Future<void> saveTokenAndStatus(String newToken, String newStatus) async {
+  //   await preferences.init();
+  //   // preferences.getString(SharedPreference.password).toString();
+  //   // Fetch the existing user data from SharedPreferences
+  //   String rawData =
+  //       preferences.getString(SharedPreference.userData).toString();
+  //   // String? existingUserDataJson =
+  //   //     preferences.getString(SharedPreference.userData);
+  //
+  //   // UserData? rawData;
+  //
+  //   if (rawData.isNotEmpty) {
+  //     userDatas = UserData.fromJson(jsonDecode(rawData));
+  //     log('userData?.address===>>>${userDatas?.countryCode ?? ''}');
+  //     // Parse the existing data into a UserData object
+  //   }
+  //
+  //   // Create a new UserData object with updated token and status
+  //   UserData updatedUserData = UserData(
+  //     email: userDatas?.email ?? "NA",
+  //     id: userDatas?.id ?? 0,
+  //     isLogin: newStatus.isNotEmpty ? newStatus : userDatas?.isLogin ?? "NA",
+  //     token: newToken.isNotEmpty ? newToken : userDatas?.token ?? "NA",
+  //     birthdate: userDatas?.birthdate ?? "NA",
+  //     countryCode: userDatas?.countryCode ?? "NA",
+  //     phone: userDatas?.phone ?? "NA",
+  //     sex: userDatas?.sex ?? "NA",
+  //     username: userDatas?.username ?? "NA",
+  //     // Add any other fields as needed...
+  //   );
+  //
+  //   // Save the updated user data back to SharedPreferences
+  //   preferences.putString(
+  //     SharedPreference.userData,
+  //     jsonEncode(updatedUserData.toJson()),
+  //   );
+  //
+  //   // Print the updated data for debugging
+  //   print("Updated User Data: ${updatedUserData.toJson()}");
+  // }
 
   logOut() async {
     await _preferences?.clear();
@@ -107,5 +151,48 @@ class SharedPreference {
     return _preferences == null
         ? defValue
         : _preferences?.getBool(key) ?? defValue;
+  }
+
+  String? getData(String key) {
+    reload();
+    return _preferences?.getString(key);
+  }
+
+  Future<bool> saveData(String key, String value) {
+    reload();
+    return _preferences!.setString(key, value);
+  }
+
+  Future<bool> saveBool(String key, bool value) {
+    reload();
+    return _preferences!.setBool(key, value);
+  }
+
+  bool? getBoolValue(String key) {
+    reload();
+    return _preferences!.getBool(key);
+  }
+
+  Future<bool> eraseData(String key) {
+    reload();
+    return _preferences!.remove(key);
+  }
+
+  Future<bool> saveFaceBookData(String key, String value) {
+    reload();
+    return _preferences!.setString(key, value);
+  }
+
+  Future<bool> eraseFaceBookData(String key) {
+    reload();
+    return _preferences!.remove(key);
+  }
+
+  Future<void> reload() {
+    return _preferences!.reload();
+  }
+
+  Future<void> clear() {
+    return _preferences!.clear();
   }
 }

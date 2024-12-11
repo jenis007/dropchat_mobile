@@ -24,7 +24,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
     return Scaffold(body: GetBuilder<RegisterController>(
       builder: (controller) {
         return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 100.h),
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
           child: SingleChildScrollView(
             child: Form(
               key: registerController.formKeyOtp,
@@ -43,39 +43,45 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                     padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
                     child: AppTextField(
                       hintText: AppString.enterCode,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please Enter otp";
+                        }
+                        return null;
+                      },
                       controller: controller.confirmationCode,
                     ),
                   ),
-                  (28.h).addHSpace(),
-                  CommonButton(
-                    onTap: () {
-                      Get.toNamed(Routes.homeScreen);
-                    },
-                    title: AppString.verify,
-                    buttonColor: AppColor.appPrimaryColor,
-                    textColor: AppColor.primaryLightColor,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      controller.onVerifyOnSinInTap(true);
-                      Get.toNamed(Routes.singInScreen);
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 9.h, left: 10.w),
-                      child: RichText(
-                        text: TextSpan(
-                          text: AppString.alreadyHaveAccount,
-                          style: TextStyleHelper.blackColor15
-                              .copyWith(fontSize: AppFontSize.font12),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: AppString.singIn,
-                                style: TextStyleHelper.primaryColor12),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  // (28.h).addHSpace(),
+                  // CommonButton(
+                  //   onTap: () {
+                  //     Get.toNamed(Routes.homeScreen);
+                  //   },
+                  //   title: AppString.verify,
+                  //   buttonColor: AppColor.appPrimaryColor,
+                  //   textColor: AppColor.primaryLightColor,
+                  // ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     controller.onVerifyOnSinInTap(true);
+                  //     Get.toNamed(Routes.singInScreen);
+                  //   },
+                  //   child: Padding(
+                  //     padding: EdgeInsets.only(top: 9.h, left: 10.w),
+                  //     child: RichText(
+                  //       text: TextSpan(
+                  //         text: AppString.alreadyHaveAccount,
+                  //         style: TextStyleHelper.blackColor15
+                  //             .copyWith(fontSize: AppFontSize.font12),
+                  //         children: <TextSpan>[
+                  //           TextSpan(
+                  //               text: AppString.singIn,
+                  //               style: TextStyleHelper.primaryColor12),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
