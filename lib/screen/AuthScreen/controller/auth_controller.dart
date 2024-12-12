@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 class AuthController extends GetxController {
   int currentPage = 0;
-  int totalPages = 4;
+  int totalPages = 5;
   setCurrentPage(int value) {
     currentPage = value;
     update();

@@ -20,4 +20,9 @@ class AppColor {
   static const Color blueColor = Color(0xFF3D72A9);
   static const Color greenColor = Color(0xFF00D33F);
   static const Color cardColor = Color(0xFFE7E6E6);
+  static const Color toastTextClr = Color(0xFF767676);
+  static const Color errorBgClr = Color(0xFFFFEBE8);
+  static const Color successBgClr = Color(0xFFEEFFE9);
+  static const Color warningBgClr = Color(0xFFFAF2E5);
+  static const Color noti = Color(0xFF3E555B);
 }

@@ -20,6 +20,13 @@ class VerifyOtpScreen extends StatefulWidget {
 class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
   RegisterController registerController = Get.find();
   @override
+  void initState() {
+    // TODO: implement initState
+    registerController.btnControlleverir.reset();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(body: GetBuilder<RegisterController>(
       builder: (controller) {
@@ -42,6 +49,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                   Padding(
                     padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
                     child: AppTextField(
+                      keyBoardType: TextInputType.number,
                       hintText: AppString.enterCode,
                       validator: (value) {
                         if (value == null || value.isEmpty) {

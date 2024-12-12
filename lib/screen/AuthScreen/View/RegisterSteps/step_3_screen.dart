@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class Step3Screen extends StatefulWidget {
   const Step3Screen({super.key});
@@ -25,7 +26,7 @@ class _Step3ScreenState extends State<Step3Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomInset: false,
         body: GetBuilder<RegisterController>(
           builder: (controller) {
             return Form(
@@ -56,8 +57,9 @@ class _Step3ScreenState extends State<Step3Screen> {
                             await registerController.searchUseName();
                             if (registerController.matchUserName.value ==
                                 true) {
-                              showErrorSnackBar(
-                                  "Username is already taken. Please choose another one.");
+                              MyToasts.warningToast(
+                                  toast:
+                                      "Username is already taken. Please choose another one.");
                             } else {
                               print('done');
                             }
@@ -69,43 +71,178 @@ class _Step3ScreenState extends State<Step3Screen> {
                         ),
                       ),
                       AppString.emailPhone.blackPlusJakarta14W400Text(),
-                      Padding(
-                        padding: EdgeInsets.only(top: 6.h, bottom: 10.h),
-                        child: AppTextField(
-                          suffixIcon:
-                              registerController.isLoadingEmail.value == true
-                                  ? const CupertinoActivityIndicator()
-                                  : null,
-                          onTapSubmited: (inputValue) async {
-                            if (Validator.isEmail(inputValue)) {
-                              await registerController.searchUserEmail();
-                              if (registerController.matchUserEmail.value ==
-                                  true) {
-                                showErrorSnackBar(
-                                    "Email is already registered. Please choose another one.");
-                              } else {
-                                print('Email is available');
-                              }
-                            } else {
-                              // If it's a username, call the username search API
-                              await registerController.searchUserPhone();
+                      Obx(
+                        () {
+                          return Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 6.h, bottom: 10.h),
+                              child: InternationalPhoneNumberInput(
+                                onInputChanged: (value) {
+                                  // Update `dialCode` and `isoCode` when the country or input changes
+                                  if (value.dialCode != null &&
+                                      value.isoCode != null) {
+                                    controller.dialCode = value.dialCode!
+                                        .replaceAll("+", ""); // Remove "+"
+                                    controller.isoCode.value =
+                                        value.isoCode!; // Update ISO code
+                                    debugPrint(
+                                        "Updated Dial Code: $controller.dialCode, ISO Code: ${controller.isoCode.value}");
+                                  }
+                                },
+                                textFieldController: controller.phoneController,
+                                initialValue: PhoneNumber(
+                                  dialCode: controller
+                                      .dialCode, // Use the current dial code
+                                  isoCode: controller
+                                      .isoCode.value, // Reactive ISO code
+                                ),
+                                onFieldSubmitted: (inputValue) async {
+                                  // if (controller
+                                  //     .emailController.text.isNotEmpty) {
+                                  if (Validator.isEmail(inputValue)) {
+                                    await registerController.searchUserEmail();
+                                    if (registerController
+                                            .matchUserEmail.value ==
+                                        true) {
+                                      MyToasts.warningToast(
+                                          toast:
+                                              "Email is already registered. Please choose another one.");
+                                    } else {
+                                      print('Email is available');
+                                    }
+                                  } else {
+                                    await registerController.searchUserPhone();
 
-                              // Check if the username is already taken
-                              if (registerController.matchUserPhone.value ==
-                                  true) {
-                                showErrorSnackBar(
-                                    "Phone is already taken. Please choose another one.");
-                              } else {
-                                // print('Username is available');
-                              }
-                            }
-                          },
-                          autoValidate: true,
-                          validator: Validator.emailOrPhoneValidator,
-                          hintText: AppString.enterEmail,
-                          controller: controller.emailController,
-                        ),
-                      ),
+                                    if (registerController
+                                            .matchUserPhone.value ==
+                                        true) {
+                                      MyToasts.warningToast(
+                                          toast:
+                                              "Phone is already taken. Please choose another one.");
+                                    } else {
+                                      // print('Username is available');
+                                    }
+                                  }
+                                  // }
+                                },
+
+                                // autoValidateMode:
+                                //     AutovalidateMode.onUserInteraction,
+
+                                onInputValidated: (bool isValid) {
+                                  // numberController.isValidPhone();
+                                },
+                                // initialValue: PhoneNumber(
+                                //   isoCode: controller.isoCode.value,
+                                // ),
+                                validator: (value) {
+                                  if (value!.trim().isEmpty) {
+                                    controller.phoneValidateText?.value =
+                                        'Please enter phone number.';
+                                    controller.isPhoneErrorShow?.value = true;
+                                    return null;
+                                  } else if (value.length <= 6) {
+                                    controller.phoneValidateText?.value =
+                                        'Please enter valid phone number.';
+                                    controller.isPhoneErrorShow?.value = true;
+                                    return null;
+                                  }
+                                  controller.phoneValidateText?.value = "";
+                                  controller.isPhoneErrorShow?.value = false;
+                                },
+                                // validator: Validator.emailOrPhoneValidator,
+
+                                selectorConfig: const SelectorConfig(
+                                  selectorType:
+                                      PhoneInputSelectorType.BOTTOM_SHEET,
+                                  trailingSpace: false,
+                                  useBottomSheetSafeArea: true,
+                                  setSelectorButtonAsPrefixIcon: true,
+                                  leadingPadding: 15,
+                                ),
+                                inputDecoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.r),
+                                      borderSide: const BorderSide(
+                                        color: AppColor.borderColor,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.r),
+                                      borderSide: const BorderSide(
+                                          color: AppColor.borderColor),
+                                    ),
+                                    errorStyle:
+                                        const TextStyle(color: Colors.red),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.r),
+                                      borderSide: const BorderSide(
+                                          color: Colors.red,
+                                          width: 1), // Focused error border
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.r),
+                                      borderSide: const BorderSide(
+                                          color: Colors.red, width: 1),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.r),
+                                      borderSide: const BorderSide(
+                                          color: AppColor.borderColor,
+                                          width: 1),
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 0.w, vertical: 0),
+                                    hintText: AppString.enterEmail,
+                                    hintStyle: TextStyleHelper.lightGreyColor15
+                                    // filled: true,
+                                    // fillColor: grey900.withOpacity(0.7),
+                                    ),
+
+                                // cursorColor: grey300,
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                      // Padding(
+                      //   padding: EdgeInsets.only(top: 6.h, bottom: 10.h),
+                      //   child: AppTextField(
+                      //     suffixIcon:
+                      //         registerController.isLoadingEmail.value == true
+                      //             ? const CupertinoActivityIndicator()
+                      //             : null,
+                      //     onTapSubmited: (inputValue) async {
+                      //       if (Validator.isEmail(inputValue)) {
+                      //         await registerController.searchUserEmail();
+                      //         if (registerController.matchUserEmail.value ==
+                      //             true) {
+                      //           MyToasts.warningToast(
+                      //               toast:
+                      //                   "Email is already registered. Please choose another one.");
+                      //         } else {
+                      //           print('Email is available');
+                      //         }
+                      //       } else {
+                      //         await registerController.searchUserPhone();
+                      //
+                      //         if (registerController.matchUserPhone.value ==
+                      //             true) {
+                      //           MyToasts.warningToast(
+                      //               toast:
+                      //                   "Phone is already taken. Please choose another one.");
+                      //         } else {
+                      //           // print('Username is available');
+                      //         }
+                      //       }
+                      //     },
+                      //     autoValidate: true,
+                      //     validator: Validator.emailOrPhoneValidator,
+                      //     hintText: AppString.enterEmail,
+                      //     controller: controller.emailController,
+                      //   ),
+                      // ),
+                      ,
                       AppString.gender.blackPlusJakarta14W400Text(),
                       Padding(
                         padding: EdgeInsets.only(top: 6.h, bottom: 10.h),
@@ -116,7 +253,7 @@ class _Step3ScreenState extends State<Step3Screen> {
                                 : null,
                             hint: Text(
                               'Select Gender',
-                              style: TextStyleHelper.greyColor15,
+                              style: TextStyleHelper.lightGreyColor15,
                             ),
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
@@ -163,13 +300,34 @@ class _Step3ScreenState extends State<Step3Screen> {
                               initialDate: DateTime.now(),
                               firstDate: DateTime(1900),
                               lastDate: DateTime(2101),
+                              builder: (BuildContext context, Widget? child) {
+                                return Theme(
+                                  data: Theme.of(context).copyWith(
+                                    colorScheme: ColorScheme.light(
+                                      primary: AppColor
+                                          .appPrimaryColor, // Header background color
+                                      onPrimary:
+                                          Colors.white, // Header text color
+                                      onSurface:
+                                          Colors.black, // Body text color
+                                    ),
+                                    textButtonTheme: TextButtonThemeData(
+                                      style: TextButton.styleFrom(
+                                        foregroundColor: AppColor
+                                            .appPrimaryColor, // "OK"/"Cancel" button text color
+                                      ),
+                                    ),
+                                  ),
+                                  child: child!,
+                                );
+                              },
                             );
                             if (selectedDate != null) {
                               String formattedDate =
-                                  "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
+                                  "${selectedDate.day.toString().padLeft(2, '0')}/${selectedDate.month.toString().padLeft(2, '0')}/${selectedDate.year.toString().padLeft(2, '0')}";
                               controller.dateController.text = formattedDate;
                               controller.dateBirth =
-                                  "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+                                  "${selectedDate.year.toString().padLeft(2, '0')}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}";
                               print(
                                   'controller.dateBirth${controller.dateBirth}');
                             }

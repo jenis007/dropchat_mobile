@@ -28,17 +28,15 @@ class Validator {
   // Email or Phone validation (either one is valid)
   static String? emailOrPhoneValidator(String? value) {
     if (value == null || value.isEmpty) {
-      return "Email or Phone number is required";
+      return "Phone number is required";
     }
 
-    // Email validation regex pattern
-    final emailPattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
-    final phonePattern = r"^[0-9]{10}$"; // Adjust for phone number format
+    // Phone number validation pattern (international and local)
+    final phonePattern = r"^\+?[1-9]\d{1,14}$"; // E.164 international format
 
-    // Check if it's a valid email or phone number
-    if (!RegExp(emailPattern).hasMatch(value) &&
-        !RegExp(phonePattern).hasMatch(value)) {
-      return "Please enter a valid Email or Phone number";
+    // Check if it's a valid phone number
+    if (!RegExp(phonePattern).hasMatch(value)) {
+      return "Please enter a valid phone number";
     }
 
     return null; // Return null if valid

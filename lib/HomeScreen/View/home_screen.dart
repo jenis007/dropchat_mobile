@@ -13,7 +13,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
-
 import '../../utils/shared_prefs.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -35,8 +34,6 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     checkFirstTime();
-    bool sss = preferences.getBool(SharedPreference.isLogin) ?? false;
-    print('sssssssssssssssssssssssssssssssss${sss}');
     // WidgetsBinding.instance.addPostFrameCallback(
     //   (_) => ShowCaseWidget.of(context)
     //       .startShowCase([_tabBarShowcaseKey, second, third]),
@@ -325,6 +322,8 @@ class _CustomShowcaseWidgetState extends State<CustomShowcaseWidget> {
   @override
   Widget build(BuildContext context) {
     return Showcase.withWidget(
+      disableBarrierInteraction: true,
+      // disposeOnTap: true,
       key: widget.globalKey,
       height: widget.height,
       width: widget.width,
@@ -433,6 +432,7 @@ class _CustomShowcaseWidgetTabState extends State<CustomShowcaseWidgetTab> {
   @override
   Widget build(BuildContext context) {
     return Showcase.withWidget(
+      disableBarrierInteraction: true,
       toolTipSlideEndDistance: 5,
       key: widget.globalKey,
       height: widget.height,

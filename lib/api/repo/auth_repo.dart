@@ -43,8 +43,9 @@ class AuthRepo {
       {required Map<String, dynamic> requestData}) async {
     String requestUrl = "${AppUrls.baseUrl}${MethodNames.otpVerification}";
 
-    ResponseItem result =
-        await BaseApiHelper.postRequest(requestUrl, requestData);
+    ResponseItem result = await BaseApiHelper.postRequest(
+        requestUrl, requestData,
+        passAuthToken: true);
 
     debugPrint("LOGIN - URL===>>>$requestUrl");
     debugPrint("LOGIN - RESULT===>>>$result");
@@ -136,10 +137,10 @@ class AuthRepo {
     return result;
   }
 
-  static Future<ResponseItem> getInterestListRepo() async {
-    String requestUrl = "${AppUrls.baseUrl}${MethodNames.getInterest}";
-    String dad = preferences.getString(SharedPreference.token) ?? '';
-    print('daddaddaddad${dad}');
+  static Future<ResponseItem> getInterestListRepo(String requestUrl) async {
+    // String requestUrl = "${AppUrls.baseUrl}${MethodNames.getInterest}";
+    String Token = preferences.getString(SharedPreference.token) ?? '';
+    print('Token=====${Token}');
     ResponseItem result =
         await BaseApiHelper.getRequest(requestUrl, passAuthToken: true);
 

@@ -31,7 +31,7 @@ class SocketService extends GetxService {
       socket.emit('msg', 'test');
     });
     socket.onConnect((_) => print('connected'));
-    // socket.onDisconnect((_) => print('Disconnected'));
+    socket.onDisconnect((_) => print('Disconnected'));
     socket.onError((error) => print('Error: $error'));
 
     if (!socket.connected) socket.connect();

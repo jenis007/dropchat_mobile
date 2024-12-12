@@ -90,6 +90,9 @@ class AppAssets {
 
   static const imag1 = "${imagePath}Circle.png";
   static const point = "${imagePath}Point.png";
+  static const errorToastIcon = "${iconPath}error_toast.svg";
+  static const warningIcon = "${iconPath}warning.svg";
+  static const successToastIcon = "${iconPath}success_toast.svg";
 }
 
 Widget appIcon({required IconData icon, double? size, Color? color}) {

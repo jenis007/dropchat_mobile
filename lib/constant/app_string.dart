@@ -29,8 +29,8 @@ class AppString {
   static const earnRewards = "Earn rewards for participation";
   static const chooseUsername = "@choose a username";
   static const username = "Username";
-  static const emailPhone = "Email or Phone";
-  static const enterEmail = "Your email";
+  static const emailPhone = "Phone";
+  static const enterEmail = "Your Phone";
   static const selectGender = "Select Gender";
   static const gender = "Gender";
   static const dateBirth = "Date of Birth";
@@ -96,4 +96,6 @@ class AppString {
 
   static const somethingWentWrong = "Something went wrong";
   static const serverError = "Server Error";
+  static const phoneEmptyValidator = "Please enter phone number.";
+  static const phoneValidValidator = "Please enter valid phone number.";
 }

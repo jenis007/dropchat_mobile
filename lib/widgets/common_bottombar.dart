@@ -35,203 +35,186 @@ class CommonBottomBar extends GetView<BottomBarController> {
       },
       child: Stack(
         children: [
-          Stack(
-            children: [
-              Scaffold(
-                body: Obx(() => screens[controller.selectedIndex.value]),
-                bottomNavigationBar: SizedBox(
-                  height: 80.h,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 15.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        _buildBottomNavigationItem(
-                          index: 0,
-                          icon: AppAssets.home,
-                          label: AppString.home,
-                        ),
-                        _buildBottomNavigationItem(
-                          index: 1,
-                          icon: AppAssets.community,
-                          label: AppString.community,
-                        ),
-                        GestureDetector(
-                          onTap: controller.toggleOverlayBottomBar,
-                          child: Obx(
-                            () => Image.asset(
-                              controller.isOverlayVisibleBottomBar.value
-                                  ? AppAssets.bottomCross
-                                  : AppAssets.addIcon,
-                              height: 40.h,
-                            ),
+          Scaffold(
+            body: Stack(
+              children: [
+                // This shows the screens based on selected index
+                Obx(() => screens[controller.selectedIndex.value]),
+
+                // Overlay that should not cover the bottom bar
+                Obx(() {
+                  return Visibility(
+                    visible: controller.isOverlayVisibleBottomBar.value,
+                    child: GestureDetector(
+                      onTap: controller
+                          .toggleOverlayBottomBar, // Close overlay when tapping anywhere outside
+                      child: Container(
+                        color: Colors.black.withOpacity(0.8),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            bottom: 20.h,
                           ),
-                        ),
-                        _buildBottomNavigationItem(
-                          index: 2,
-                          icon: AppAssets.message,
-                          label: AppString.message,
-                        ),
-                        _buildBottomNavigationItem(
-                          index: 3,
-                          icon: AppAssets.profile,
-                          label: AppString.profile,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Obx(
-                () {
-                  if (controller.isOverlayVisibleBottomBar.value) {
-                    return Visibility(
-                      visible: controller.isOverlayVisibleBottomBar.value,
-                      child: GestureDetector(
-                        onTap: controller
-                            .toggleOverlayBottomBar, // Close overlay when tapping anywhere outside
-                        child: Container(
-                          color: Colors.black.withOpacity(0.8),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              bottom: 20.h,
-                            ),
-                            child: Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Image.asset(
-                                        AppAssets.bottomSpain,
-                                        height: 70.h,
-                                      ),
-                                      SizedBox(
-                                        height: 5.h,
-                                      ),
-                                      Text(
-                                        AppString.spain,
-                                        style: TextStyle(
-                                            color: AppColor.whiteColor,
-                                            fontSize: 10.sp,
-                                            fontWeight: FontWeight.w400),
-                                      )
-                                    ],
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Image.asset(
-                                        AppAssets.bottomDropchat,
-                                        height: 70.h,
-                                      ),
-                                      SizedBox(
-                                        height: 5.h,
-                                      ),
-                                      Text(
-                                        AppString.dropchatsBottom,
-                                        style: TextStyle(
-                                            color: AppColor.whiteColor,
-                                            fontSize: 10.sp,
-                                            fontWeight: FontWeight.w400),
-                                      )
-                                    ],
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Image.asset(
-                                        AppAssets.bottomHowtodropchat,
-                                        height: 70.h,
-                                      ),
-                                      SizedBox(
-                                        height: 5.h,
-                                      ),
-                                      Text(
-                                        AppString.howToDropchats,
-                                        style: TextStyle(
-                                            color: AppColor.whiteColor,
-                                            fontSize: 10.sp,
-                                            fontWeight: FontWeight.w400),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Image.asset(
+                                      AppAssets.bottomSpain,
+                                      height: 70.h,
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Text(
+                                      AppString.spain,
+                                      style: TextStyle(
+                                          color: AppColor.whiteColor,
+                                          fontSize: 10.sp,
+                                          fontWeight: FontWeight.w400),
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Image.asset(
+                                      AppAssets.bottomDropchat,
+                                      height: 70.h,
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Text(
+                                      AppString.dropchatsBottom,
+                                      style: TextStyle(
+                                          color: AppColor.whiteColor,
+                                          fontSize: 10.sp,
+                                          fontWeight: FontWeight.w400),
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Image.asset(
+                                      AppAssets.bottomHowtodropchat,
+                                      height: 70.h,
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Text(
+                                      AppString.howToDropchats,
+                                      style: TextStyle(
+                                          color: AppColor.whiteColor,
+                                          fontSize: 10.sp,
+                                          fontWeight: FontWeight.w400),
+                                    )
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ),
-                    );
-                  } else {
-                    return const SizedBox();
-                  }
-                },
-              )
-            ],
+                    ),
+                  );
+                }),
+              ],
+            ),
+            bottomNavigationBar: SizedBox(
+              height: 80.h,
+              child: Padding(
+                padding: EdgeInsets.only(top: 15.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    _buildBottomNavigationItem(
+                        index: 0, icon: AppAssets.home, label: AppString.home),
+                    _buildBottomNavigationItem(
+                        index: 1,
+                        icon: AppAssets.community,
+                        label: AppString.community),
+                    GestureDetector(
+                      onTap: controller.toggleOverlayBottomBar,
+                      child: Obx(
+                        () => Image.asset(
+                          controller.isOverlayVisibleBottomBar.value
+                              ? AppAssets.bottomCross
+                              : AppAssets.addIcon,
+                          height: 40.h,
+                        ),
+                      ),
+                    ),
+                    _buildBottomNavigationItem(
+                        index: 2,
+                        icon: AppAssets.message,
+                        label: AppString.message),
+                    _buildBottomNavigationItem(
+                        index: 3,
+                        icon: AppAssets.profile,
+                        label: AppString.profile),
+                  ],
+                ),
+              ),
+            ),
           ),
+          // Overlay for finishing screen (separate from the bottom bar)
           Obx(() {
             if (controller.isOverlayVisibleFinishHome.value) {
               return Visibility(
-                  visible: controller.isOverlayVisibleFinishHome.value,
-                  child: Container(
-                    color: Colors.black.withOpacity(0.8),
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        bottom: 20.h,
-                      ),
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              AppString.welcomeDropChat,
-                              style: TextStyle(
-                                  color: AppColor.whiteColor,
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w500),
+                visible: controller.isOverlayVisibleFinishHome.value,
+                child: Container(
+                  color: Colors.black.withOpacity(0.6),
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 20.h),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            AppString.welcomeDropChat,
+                            style: TextStyle(
+                                color: AppColor.whiteColor,
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(height: 8.h),
+                          Text(
+                            AppString.sub,
+                            style: TextStyle(
+                                color: AppColor.whiteColor,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          SizedBox(height: 104.h),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            child: CommonButton(
+                              buttonColor: AppColor.appPrimaryColor,
+                              textColor: AppColor.whiteColor,
+                              title: AppString.joinNow,
+                              onTap: () {
+                                controller.hideOverlay();
+                                // Get.back();
+                              },
                             ),
-                            SizedBox(
-                              height: 8.h,
-                            ),
-                            Text(
-                              AppString.sub,
-                              style: TextStyle(
-                                  color: AppColor.whiteColor,
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                            SizedBox(
-                              height: 104.h,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(right: 20.w, left: 20.w),
-                              child: CommonButton(
-                                buttonColor: AppColor.appPrimaryColor,
-                                textColor: AppColor.whiteColor,
-                                title: AppString.joinNow,
-                                onTap: () {
-                                  controller.hideOverlay();
-                                  // Get.back();
-                                },
-                              ),
-                            )
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                  ));
+                  ),
+                ),
+              );
             } else {
               return SizedBox.shrink();
             }

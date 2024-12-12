@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:dropchats/api/repo/auth_repo.dart';
 import 'package:dropchats/constant/app_string.dart';
+import 'package:dropchats/constant/request_constant.dart';
 import 'package:dropchats/model/GetIntrestModel.dart';
 import 'package:dropchats/model/SingUp_model.dart';
 import 'package:dropchats/model/authLogin_model.dart';
@@ -32,7 +33,7 @@ class RegisterController extends GetxController {
   final GlobalKey<FormState> formKeyLogin = GlobalKey<FormState>();
   TextEditingController searchController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPassController = TextEditingController();
@@ -48,6 +49,10 @@ class RegisterController extends GetxController {
   }
 
   Map<dynamic, String> passData = {};
+  String dialCode = "91";
+  RxString isoCode = 'IN'.obs;
+  RxString? phoneValidateText = "".obs;
+  RxBool? isPhoneErrorShow = false.obs;
 
   ///verify otp Screen
   TextEditingController confirmationCode = TextEditingController();
@@ -92,8 +97,13 @@ class RegisterController extends GetxController {
 
   ///selected univercity id
   RxString univerCityId = ''.obs;
-  var selectedChips = <int>{}.obs;
+  // var selectedChips = <int>{}.obs;
+  // RxList<int> selectedChips = <int>[].obs;
+  RxList<int> isChipLoading = <int>[].obs;
+  RxSet<int> selectedChips = RxSet<int>();
+  RxSet<int> selectedChipsa = RxSet<int>();
 
+  RxBool isLoadingSelectedInterest = false.obs;
   RxInt currentIndex = 0.obs;
   RxInt currentIndexSelectedJoinCampus = (-1).obs;
   RxBool verifyOnSinInTap = false.obs;
@@ -160,37 +170,40 @@ class RegisterController extends GetxController {
 
   ///get Collage list
   Future<void> getCollegeList() async {
-    // FirebaseMessaging messaging = FirebaseMessaging.instance;
-    // String? deviceToken = await messaging.getToken();
-    // print('deviceTokendeviceTokendeviceToken${deviceToken}');
-    isLoadingFirstStep.value = true;
-    ResponseItem result = await AuthRepo.getCollegeListRepo();
+    isLoadingFirstStep.value = true; // Start loading indicator
 
-    debugPrint("GetCollege  api response :::::: ${result.data}");
     try {
+      ResponseItem result = await AuthRepo.getCollegeListRepo();
+      debugPrint("GetCollege api response :::::: ${result.data}");
+
       if (result.status) {
         if (result.data != null) {
           GetCollegeListModel getCollegeListModels =
               GetCollegeListModel.fromJson(result.data);
           getCollegeListModel.value = getCollegeListModels;
-          isLoadingFirstStep.value = false;
+
           debugPrint(
               "getCollegeListModel.value :::::: ${getCollegeListModel.value}");
         } else {
-          showErrorSnackBar(result.message.toString().isNotEmpty
-              ? result.message.toString()
-              : AppString.somethingWentWrong);
-          isLoadingFirstStep.value = false;
+          // Handle null data response
+          MyToasts.errorToast(
+              toast: result.message.toString().isNotEmpty
+                  ? result.message.toString()
+                  : AppString.somethingWentWrong);
         }
       } else {
-        showErrorSnackBar(result.message.toString().isNotEmpty
-            ? result.message.toString()
-            : AppString.somethingWentWrong);
+        // Handle unsuccessful response
+        MyToasts.errorToast(
+            toast: result.message.toString().isNotEmpty
+                ? result.message.toString()
+                : AppString.somethingWentWrong);
       }
     } catch (e) {
-      print('${e}');
-      isLoadingFirstStep.value = false;
+      // Handle any unexpected exceptions
+      debugPrint("Error in getCollegeList: $e");
+      MyToasts.errorToast(toast: AppString.somethingWentWrong);
     } finally {
+      // Stop the loading indicator in all cases
       isLoadingFirstStep.value = false;
     }
   }
@@ -198,37 +211,53 @@ class RegisterController extends GetxController {
   ///search user name match
   Future<void> searchUseName() async {
     isLoadingUserName.value = true;
-    ResponseItem result = await AuthRepo.searchUseNameRepo(requestData: {
-      "username": usernameController.text,
-    });
 
-    debugPrint("GetAuth  api response :::::: ${result.data}");
     try {
+      // Make API call
+      ResponseItem result = await AuthRepo.searchUseNameRepo(requestData: {
+        "username": usernameController.text,
+      });
+
+      debugPrint("GetAuth API Response :::::: ${result.data}");
+
+      // Handle successful response
       if (result.status) {
         if (result.data != null) {
+          // Parse the response data
           SearchUserNameModel searchUserNameModels =
               SearchUserNameModel.fromJson(result.data);
           searchUserNameModel.value = searchUserNameModels;
+
+          // Update match status
           matchUserName.value = searchUserNameModel.value?.username ?? false;
+          debugPrint("Matched Username: ${matchUserName.value}");
           update();
-          isLoadingUserName.value = false;
-          debugPrint(
-              "getCollegeListModel.value :::::: ${getCollegeListModel.value}");
         } else {
-          showErrorSnackBar(result.message.toString().isNotEmpty
-              ? result.message.toString()
-              : AppString.somethingWentWrong);
-          isLoadingUserName.value = false;
+          // Handle empty data case
+          MyToasts.errorToast(
+            toast: result.message.toString().isNotEmpty
+                ? result.message
+                : AppString.somethingWentWrong,
+          );
         }
       } else {
-        showErrorSnackBar(result.message.toString().isNotEmpty
-            ? result.message.toString()
-            : AppString.somethingWentWrong);
+        // Handle unsuccessful status
+        MyToasts.errorToast(
+          toast: result.message.toString().isNotEmpty
+              ? result.message
+              : AppString.somethingWentWrong,
+        );
       }
     } catch (e) {
-      print('${e}');
-      isLoadingUserName.value = false;
+      // Handle exceptions
+      debugPrint("Error occurred in searchUseName: $e");
+      MyToasts.errorToast(
+        toast: e.toString().isNotEmpty
+            ? e.toString()
+            : AppString.somethingWentWrong,
+      );
     } finally {
+      // Ensure loading is reset
       isLoadingUserName.value = false;
     }
   }
@@ -236,35 +265,53 @@ class RegisterController extends GetxController {
   ///search user email match
   Future<void> searchUserEmail() async {
     isLoadingEmail.value = true;
-    ResponseItem result = await AuthRepo.searchUseNameRepo(requestData: {
-      "email": emailController.text,
-    });
 
-    debugPrint("GetAuth  api response :::::: ${result.data}");
     try {
+      // Make API call
+      ResponseItem result = await AuthRepo.searchUseNameRepo(requestData: {
+        "email": phoneController.text,
+      });
+
+      debugPrint("GetAuth API Response :::::: ${result.data}");
+
+      // Handle successful response
       if (result.status) {
         if (result.data != null) {
+          // Parse the response data
           SearchEmailNameModel searchUserEmailModels =
               SearchEmailNameModel.fromJson(result.data);
           searchEmailNameModel.value = searchUserEmailModels;
+
+          // Update match status
           matchUserEmail.value = searchEmailNameModel.value?.email ?? false;
+          debugPrint("Matched Email: ${matchUserEmail.value}");
           update();
-          isLoadingEmail.value = false;
         } else {
-          showErrorSnackBar(result.message.toString().isNotEmpty
-              ? result.message.toString()
-              : AppString.somethingWentWrong);
-          isLoadingEmail.value = false;
+          // Handle empty data case
+          MyToasts.errorToast(
+            toast: result.message.toString().isNotEmpty
+                ? result.message
+                : AppString.somethingWentWrong,
+          );
         }
       } else {
-        showErrorSnackBar(result.message.toString().isNotEmpty
-            ? result.message.toString()
-            : AppString.somethingWentWrong);
+        // Handle unsuccessful status
+        MyToasts.errorToast(
+          toast: result.message.toString().isNotEmpty
+              ? result.message
+              : AppString.somethingWentWrong,
+        );
       }
     } catch (e) {
-      print('${e}');
-      isLoadingEmail.value = false;
+      // Handle exceptions
+      debugPrint("Error occurred in searchUserEmail: $e");
+      MyToasts.errorToast(
+        toast: e.toString().isNotEmpty
+            ? e.toString()
+            : AppString.somethingWentWrong,
+      );
     } finally {
+      // Ensure loading is reset
       isLoadingEmail.value = false;
     }
   }
@@ -272,176 +319,262 @@ class RegisterController extends GetxController {
   ///search user phone match
   Future<void> searchUserPhone() async {
     isLoadingEmail.value = true;
-    ResponseItem result = await AuthRepo.searchUseNameRepo(requestData: {
-      "country_code": "+91",
-      "phone": emailController.text,
-    });
 
-    debugPrint("GetAuth  api response :::::: ${result.data}");
     try {
+      // Make API call
+      ResponseItem result = await AuthRepo.searchUseNameRepo(requestData: {
+        "country_code": dialCode.toString(),
+        "phone": phoneController.text,
+      });
+
+      debugPrint("GetAuth API Response :::::: ${result.data}");
+
+      // Handle successful response
       if (result.status) {
         if (result.data != null) {
+          // Parse the response data
           SearchUserPhoneModel searchUserPhoneModels =
               SearchUserPhoneModel.fromJson(result.data);
           searchUserPhoneModel.value = searchUserPhoneModels;
+
+          // Update match status
           matchUserPhone.value = searchUserPhoneModel.value?.phone ?? false;
+          debugPrint("Matched Phone: ${matchUserPhone.value}");
           update();
-          isLoadingEmail.value = false;
         } else {
-          showErrorSnackBar(result.message.toString().isNotEmpty
-              ? result.message.toString()
-              : AppString.somethingWentWrong);
-          isLoadingEmail.value = false;
+          // Handle empty data case
+          MyToasts.errorToast(
+            toast: result.message.toString().isNotEmpty
+                ? result.message
+                : AppString.somethingWentWrong,
+          );
         }
       } else {
-        showErrorSnackBar(result.message.toString().isNotEmpty
-            ? result.message.toString()
-            : AppString.somethingWentWrong);
+        // Handle unsuccessful status
+        MyToasts.errorToast(
+          toast: result.message.toString().isNotEmpty
+              ? result.message
+              : AppString.somethingWentWrong,
+        );
       }
     } catch (e) {
-      print('${e}');
-      isLoadingEmail.value = false;
+      // Handle exceptions
+      debugPrint("Error occurred in searchUserPhone: $e");
+      MyToasts.errorToast(
+        toast: e.toString().isNotEmpty
+            ? e.toString()
+            : AppString.somethingWentWrong,
+      );
     } finally {
+      // Ensure loading is reset
       isLoadingEmail.value = false;
     }
   }
+
+  var currentPage = 1.obs;
+  var isLastPage = false.obs; // Whether the last page has been reached
+  RxBool isLoadingMoreData = false.obs; // New flag to track pagination loading
 
   ///get interest list
-  Future<void> getInterestList() async {
-    isLoadingFirstStep.value = true;
-    ResponseItem result = await AuthRepo.getInterestListRepo();
+  Future<void> getInterestList({bool isNextPage = false}) async {
+    if (isNextPage && isLastPage.value) return; // No more pages to load
 
-    debugPrint("GetCollege  api response :::::: ${result.data}");
+    if (!isNextPage) {
+      isLoadingFirstStep.value = true;
+      currentPage.value = 1; // Reset to the first page
+      isLastPage.value = false;
+    } else {
+      isLoadingMoreData.value = true; // Start loading more data
+    }
+
     try {
+      String apiUrl =
+          "${AppUrls.baseUrl}${MethodNames.getInterest}?page=${currentPage.value}";
+      ResponseItem result = await AuthRepo.getInterestListRepo(apiUrl);
+
+      debugPrint("GetInterestList API Response :::::: ${result.data}");
+
       if (result.status) {
         if (result.data != null && result.data.toString().isNotEmpty) {
-          GetInterestModel getInterestListModels =
-              GetInterestModel.fromJson(result.data);
-          getInterestModel.value = getInterestListModels;
-          isLoadingFirstStep.value = false;
-          debugPrint("getCollegeListModel.value :::::: ${result.data}");
-        } else {
-          showErrorSnackBar("No data available.");
-        }
-        //
-      } else {
-        showErrorSnackBar(result.message.toString().isNotEmpty
-            ? result.message.toString()
-            : AppString.somethingWentWrong);
-        isLoadingFirstStep.value = false;
-      }
+          GetInterestModel newData = GetInterestModel.fromJson(result.data);
 
-      // }
+          if (!isNextPage) {
+            getInterestModel.value = newData;
+          } else {
+            getInterestModel.value!.entries.addAll(newData.entries);
+          }
+
+          if (newData.entries.length < 10) {
+            isLastPage.value = true;
+          } else {
+            currentPage.value++;
+          }
+        } else {
+          if (!isNextPage) {
+            MyToasts.errorToast(toast: "No data available");
+          }
+          isLastPage.value = true;
+        }
+      } else {
+        MyToasts.errorToast(
+            toast: result.message ?? AppString.somethingWentWrong);
+      }
     } catch (e) {
-      print('${e}');
-      isLoadingFirstStep.value = false;
+      debugPrint("Error in getInterestList: $e");
+      MyToasts.errorToast(
+          toast: e.toString().isNotEmpty
+              ? e.toString()
+              : AppString.somethingWentWrong);
     } finally {
-      isLoadingFirstStep.value = false;
+      if (isNextPage) {
+        isLoadingMoreData.value = false; // Stop loading more data
+      } else {
+        isLoadingFirstStep.value = false; // Stop initial loading
+      }
     }
   }
+
+  // Future<void> getInterestList() async {
+  //   isLoadingFirstStep.value = true;
+  //
+  //   try {
+  //     // API call
+  //     ResponseItem result = await AuthRepo.getInterestListRepo();
+  //
+  //     debugPrint("GetInterestList API Response :::::: ${result.data}");
+  //
+  //     if (result.status) {
+  //       if (result.data != null && result.data.toString().isNotEmpty) {
+  //         // Parse the response
+  //         GetInterestModel getInterestListModels =
+  //             GetInterestModel.fromJson(result.data);
+  //         getInterestModel.value = getInterestListModels;
+  //
+  //         debugPrint("getInterestListModel.value :::::: ${result.data}");
+  //       } else {
+  //         MyToasts.errorToast(toast: "No data available");
+  //       }
+  //     } else {
+  //       MyToasts.errorToast(
+  //           toast: result.message ?? AppString.somethingWentWrong);
+  //     }
+  //   } catch (e) {
+  //     debugPrint("Error in getInterestList: $e");
+  //     MyToasts.errorToast(
+  //         toast: e.toString().isNotEmpty
+  //             ? e.toString()
+  //             : AppString.somethingWentWrong);
+  //   } finally {
+  //     isLoadingFirstStep.value = false;
+  //   }
+  // }
 
   ///get interest list
   Future<bool> getInterestSelect(int id) async {
-    ResponseItem result = await AuthRepo.userInterestSelect(
-        requestData: {"interest": id.toString()});
-
-    debugPrint("GetInterest API response :::::: ${result.statusCode}");
+    isLoadingSelectedInterest.value = true;
     try {
+      // API call
+      ResponseItem result = await AuthRepo.userInterestSelect(
+        requestData: {"interest": id.toString()},
+      );
+
+      debugPrint("GetInterest API response :::::: ${result.statusCode}");
+
+      // Handle response
       if (result.status) {
         if (result.data != null && result.data.toString().isNotEmpty) {
+          // Parse the response
           UserIntrestnSelectModel userIntrestnSelectModels =
               UserIntrestnSelectModel.fromJson(result.data);
           userIntrestnSelectModel.value = userIntrestnSelectModels;
-
+          isLoadingSelectedInterest.value = false;
           debugPrint("UserIntrestnSelectModel.value :::::: ${result.data}");
-          return true; // API call successful
+          return true; // Success
         } else {
-          showErrorSnackBar("No data available.");
+          // Handle empty data
+          MyToasts.errorToast(toast: "No data available");
         }
       } else if (result.statusCode == 400) {
+        isLoadingSelectedInterest.value = false;
+        // Handle specific error for bad request
         debugPrint("Bad Request: ${result.message}");
-        showErrorSnackBar("User already has interest, assign another");
+        MyToasts.errorToast(toast: "User already has interest, assign another");
       } else {
-        showErrorSnackBar(result.message.toString().isNotEmpty
-            ? result.message.toString()
-            : AppString.somethingWentWrong);
+        isLoadingSelectedInterest.value = false;
+        // Handle generic error
+        MyToasts.errorToast(
+          toast: result.message.toString().isNotEmpty
+              ? result.message
+              : AppString.somethingWentWrong,
+        );
       }
     } catch (e) {
+      isLoadingSelectedInterest.value = false;
+      // Handle exceptions
       debugPrint("Error in getInterestSelect: $e");
+      MyToasts.errorToast(
+        toast: e.toString().isNotEmpty
+            ? e.toString()
+            : AppString.somethingWentWrong,
+      );
     }
-    return false; // API call failed
+    return false; // Return false in case of any failure
   }
-
-  // Future<void> getInterestSelect(int id) async {
-  //   ResponseItem result =
-  //       await AuthRepo.userInterestSelect(requestData: {"interest": id});
-  //
-  //   debugPrint("GetCollege  api response :::::: ${result.data}");
-  //   try {
-  //     if (result.status) {
-  //       if (result.data != null && result.data.toString().isNotEmpty) {
-  //         UserIntrestnSelectModel userIntrestnSelectModels =
-  //             UserIntrestnSelectModel.fromJson(result.data);
-  //         userIntrestnSelectModel.value = userIntrestnSelectModels;
-  //
-  //         debugPrint("UserIntrestnSelectModel.value :::::: ${result.data}");
-  //       } else {
-  //         showErrorSnackBar("No data available.");
-  //       }
-  //       //
-  //     } else {
-  //       showErrorSnackBar(result.message.toString().isNotEmpty
-  //           ? result.message.toString()
-  //           : AppString.somethingWentWrong);
-  //     }
-  //
-  //     // }
-  //   } catch (e) {
-  //     print('${e}');
-  //   } finally {}
-  // }
 
   /// userRegister Api
   Future<void> userRegister() async {
     isAuthanitication.value = true;
-    ResponseItem result = await AuthRepo.loginRepo(requestData: {
-      "username": "name",
-      "password": "Test@123",
-      // "username": usernameController.text.toString(),
-      // "password": passwordController.text.toString()
-    });
-
-    debugPrint("userRegister api response :::::: ${result.data}");
-
     try {
+      // API request
+      ResponseItem result = await AuthRepo.loginRepo(requestData: {
+        "username": usernameController.text.toString(),
+        "password": passwordController.text.toString()
+      });
+
+      debugPrint("userRegister api response :::::: ${result.data}");
+
+      // Handle response
       if (result.status) {
         if (result.data != null) {
+          // Parse and store user login data
           AuthLoginModel authLoginModels = AuthLoginModel.fromJson(result.data);
           preferences.putBool(SharedPreference.isLogin, true);
           authLoginModel.value = authLoginModels;
           preferences.putString(
               SharedPreference.token, authLoginModel.value?.token ?? "NA");
+
           update();
           btnController.reset();
           isAuthanitication.value = false;
         } else {
+          // Handle case where data is null
           btnErrorPhone();
-          showErrorSnackBar(result.message.toString().isNotEmpty
-              ? result.message.toString()
-              : AppString.somethingWentWrong);
+          MyToasts.errorToast(
+              toast: result.message.toString().isNotEmpty
+                  ? result.message
+                  : AppString.somethingWentWrong);
           isAuthanitication.value = false;
         }
       } else {
+        // Handle unsuccessful response
         btnErrorPhone();
-        showErrorSnackBar(result.message.toString().isNotEmpty
-            ? result.message.toString()
-            : AppString.somethingWentWrong);
+        MyToasts.errorToast(
+            toast: result.message.toString().isNotEmpty
+                ? result.message
+                : AppString.somethingWentWrong);
+        isAuthanitication.value = false;
       }
     } catch (e) {
+      // Handle exceptions during API request
       btnErrorPhone();
-      print('${e}');
+      print('Error during user registration: $e');
+      MyToasts.errorToast(
+          toast: e.toString().isNotEmpty
+              ? e.toString()
+              : AppString.somethingWentWrong);
       isAuthanitication.value = false;
     } finally {
+      // Reset button and loading state
       btnController.reset();
       isAuthanitication.value = false;
     }
@@ -451,22 +584,18 @@ class RegisterController extends GetxController {
 
   Future<void> userRegisterData(VoidCallback? Success) async {
     isAuthanitication.value = true;
-    data.addAll({
-      "birthdate": dateBirth.toString(),
-      "country_code": "+91",
-      "sex": selectedGender.value == 'Male'
-          ? 'm'
-          : (selectedGender.value == 'Female')
-              ? 'f'
-              : '',
-      "username": usernameController.text.toString(),
-      "password": passwordController.text.toString(),
-      "university_id": passData['univerCiti_id'] ?? '',
-      "email": 'Test@gmail.com',
+    //     {
+    //   "birthdate": "1976-05-25",
+    //   "country_code": "+91",
+    //   "email": "test@gmail.com",
+    //   "phone": "9054573360",
+    //   "sex": "m",
+    //   "username": "name",
+    //   "password": "Test@123",
+    //   "university_id": "1",
+    // }
 
-      ///chang this
-      "phone": emailController.text.toString(),
-    });
+    ///when one key pass email or phone
     // if (isEmail(emailController.text.toString())) {
     //   data.addAll({
     //     "email": emailController.text.toString(),
@@ -476,28 +605,38 @@ class RegisterController extends GetxController {
     //     "phone": emailController.text.toString(),
     //   });
     // }
-    ResponseItem result = await AuthRepo.signUpRepo(requestData:
-        // data
-        {
-      "birthdate": "1976-05-25",
-      "country_code": "+91",
-      "email": "test@gmail.com",
-      "phone": "7428730894",
-      "sex": "m",
-      "username": "name",
-      "password": "Test@123",
-      "university_id": "1",
+    // Prepare request data
+    data.addAll({
+      "birthdate": dateBirth.toString(),
+      "country_code": dialCode.toString(),
+      "sex": selectedGender.value == 'Male'
+          ? 'm'
+          : (selectedGender.value == 'Female' ? 'f' : ''),
+      "username": usernameController.text.toString(),
+      "password": passwordController.text.toString(),
+      "university_id": passData['univerCiti_id'] ?? '',
+      "email": 'Test@gmail.com',
+      "phone": phoneController.text.toString().trim(),
     });
-    debugPrint("userRegisterData  api response :::::: ${result.toString()}");
-    debugPrint("API Response: ${result.data}");
+
     try {
+      ResponseItem result = await AuthRepo.signUpRepo(requestData: data);
+      debugPrint("userRegisterData API response :::::: ${result.toString()}");
+      debugPrint("API Response: ${result.data}");
+
+      // Handle API response
+      // if (result.statusCode == 422) {
+      //   MyToasts.errorToast(toast: AppString.somethingWentWrong);
+      // } else if
       if (result.status == true) {
         if (result.data != null) {
+          // Parse the response data
           AuthSignupModel authSignupModels =
               AuthSignupModel.fromJson(result.data);
           authSignupModel.value = authSignupModels;
+
+          // Save user data and token
           preferences.putBool(SharedPreference.isLogin, true);
-          print('authLoginModel.value${authSignupModel.value?.toJson()}');
           preferences.putString(
               SharedPreference.password, passwordController.text.toString());
           preferences.saveUserData(authSignupModels.data!);
@@ -505,37 +644,30 @@ class RegisterController extends GetxController {
           if (Success != null) {
             Success();
           }
-          update();
+
           btnController.reset();
           isAuthanitication.value = false;
+          update();
         } else {
+          // Handle null data in response
           btnErrorPhone();
-          showErrorSnackBar(result.message.toString().isNotEmpty
-              ? result.message.toString()
-              : AppString.somethingWentWrong);
+          MyToasts.errorToast(
+              toast: result.message?.isNotEmpty == true
+                  ? result.message!
+                  : AppString.somethingWentWrong);
           isAuthanitication.value = false;
         }
       } else {
         btnErrorPhone();
-        showErrorSnackBar(result.message.toString().isNotEmpty
-            ? result.message.toString()
-            : AppString.somethingWentWrong);
+        MyToasts.errorToast(
+            toast: result.message?.isNotEmpty == true
+                ? result.message!
+                : AppString.somethingWentWrong);
       }
     } catch (e) {
+      // Error handling
       btnErrorPhone();
-      if (e is DioError) {
-        debugPrint('API Error: ${e.response?.data}'); // Server response
-        debugPrint(
-            'Status Code: ${e.response?.statusCode}'); // HTTP status code
-        debugPrint(
-            'Request Data: ${e.requestOptions.data}'); // Sent request data
-        debugPrint('Headers: ${e.response?.headers}'); // Response headers
-      } else {
-        // General error
-        debugPrint('Unexpected Error: $e');
-      }
-      print('eeeeeeeeeeeeeeeeeeeeeeee${e}');
-      btnErrorPhone();
+      MyToasts.errorToast(toast: e.toString());
       isAuthanitication.value = false;
     } finally {
       btnController.reset();
@@ -544,42 +676,61 @@ class RegisterController extends GetxController {
   }
 
   /// userRegister Api
-  Future<void> userOtpVerification() async {
-    isAuthanitication.value = true;
-    ResponseItem result = await AuthRepo.otpVerification(requestData: {
-      "otp": confirmationCode.text.toString(),
-    });
 
-    debugPrint("userRegister api response :::::: ${result.data}");
-
+  Future<void> userOtpVerification(VoidCallback? Success) async {
+    btnControlleverir.reset();
     try {
+      ResponseItem result = await AuthRepo.otpVerification(requestData: {
+        "otp": confirmationCode.text.toString(),
+      });
+      debugPrint("userRegister api response :::::: ${result.data}");
+
       if (result.status) {
-        btnSussPhone();
         if (result.data != null) {
           AuthOtpVerificationModel authOtpVerification =
               AuthOtpVerificationModel.fromJson(result.data);
           authOtpVerificationModel.value = authOtpVerification;
-          btnControlleverir.reset();
-          update();
+          if (authOtpVerificationModel.value?.verified == true) {
+            if (Success != null) {
+              btnControlleverir.success();
+              Success();
+              MyToasts.successToast(toast: 'Otp Verified Successfully');
+              confirmationCode.clear();
+            }
+          } else {
+            // If verification fails
+            MyToasts.errorToast(
+                toast: result.message?.isNotEmpty == true
+                    ? result.message.toString()
+                    : AppString.somethingWentWrong);
+            btnControlleverir.reset();
+          }
         } else {
+          MyToasts.errorToast(
+              toast: result.message?.isNotEmpty == true
+                  ? result.message.toString()
+                  : AppString.somethingWentWrong);
           btnControlleverir.reset();
-          showErrorSnackBar(result.message.toString().isNotEmpty
-              ? result.message.toString()
-              : AppString.somethingWentWrong);
         }
       } else {
-        btnControlleverir.error();
+        MyToasts.errorToast(
+            toast: result.message?.isNotEmpty == true
+                ? result.message.toString()
+                : AppString.somethingWentWrong);
         btnControlleverir.reset();
-        showErrorSnackBar(result.message.toString().isNotEmpty
-            ? result.message.toString()
-            : AppString.somethingWentWrong);
       }
     } catch (e) {
-      btnControlleverir.error();
       btnControlleverir.reset();
-      print('${e}');
+      update();
+      MyToasts.errorToast(toast: e.toString());
+      // Reset the button in case of error
+      debugPrint("Error: $e");
     } finally {
       btnControlleverir.reset();
+      // In the finally block, button reset should be done only if OTP verification fails
+      if (authOtpVerificationModel.value?.verified != true) {
+        btnControlleverir.reset();
+      }
     }
   }
 
@@ -605,30 +756,32 @@ class RegisterController extends GetxController {
                 passwordLoginController.text.toString());
             Get.toNamed(Routes.homeScreen);
             btnControllLogIN.reset();
-            showSuccessSnackBar('Login Success');
+            MyToasts.successToast(toast: 'Login Successfully');
           } else {
             btnControllLogIN.reset();
-            showErrorSnackBar(AppString.somethingWentWrong);
+            MyToasts.errorToast(toast: AppString.somethingWentWrong);
           }
         } else if (result.statusCode == 404) {
           btnControllLogIN.reset();
           debugPrint("Bad Request: ${result.message}");
-          showErrorSnackBar(
-              "Can't login, invalid credentials or user doesn't exists");
+          MyToasts.errorToast(
+              toast: "Can't login, invalid credentials or user doesn't exists");
         }
       } else if (result.statusCode == 404) {
         btnControllLogIN.reset();
         debugPrint("Bad Request: ${result.message}");
-        showErrorSnackBar(
-            "Can't login, invalid credentials or user doesn't exists");
+        MyToasts.errorToast(
+            toast: "Can't login, invalid credentials or user doesn't exists");
       } else {
         btnControllLogIN.reset();
-        showErrorSnackBar(result.message.toString().isNotEmpty
-            ? result.message.toString()
-            : AppString.somethingWentWrong);
+        MyToasts.errorToast(
+            toast: result.message.toString().isNotEmpty
+                ? result.message.toString()
+                : AppString.somethingWentWrong);
       }
     } catch (e) {
       debugPrint('e==========>>>>>$e');
+      MyToasts.errorToast(toast: e.toString());
       btnControllLogIN.reset();
     }
     update();

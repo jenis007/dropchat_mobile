@@ -1,3 +1,4 @@
+import 'package:dropchats/screen/AuthScreen/View/RegisterSteps/contact_screen.dart';
 import 'package:dropchats/screen/AuthScreen/View/RegisterSteps/steo_2_screen.dart';
 import 'package:dropchats/screen/AuthScreen/View/RegisterSteps/step_3_screen.dart';
 import 'package:dropchats/screen/AuthScreen/View/RegisterSteps/verify_otp_screen.dart';
@@ -17,7 +18,7 @@ import 'package:get/get.dart';
 import '../screen/AuthScreen/View/RegisterSteps/register_steps_screen.dart';
 
 class Routes {
-  static String splashScreen = "/";
+  // static String splashScreen = "/";
   static String onBoarding = "/onBoarding";
   static String registerStepsScreen = "/registerStepsScreen";
   static String homeScreen = "/homeScreen";
@@ -30,15 +31,20 @@ class Routes {
   static String singInScreen = "/singInScreen";
   static String step2Screen = "/Step2Screen";
   static String step3Screen = "/step3Screen";
+  static String contactScreen = "/ContactScreen";
 
   static List<GetPage> routes = [
-    GetPage(
-      name: splashScreen,
-      page: () => SplashScreen(),
-    ),
+    // GetPage(
+    //   name: splashScreen,
+    //   page: () => SplashScreen(),
+    // ),
     GetPage(
       name: onBoarding,
       page: () => const OnBoardingScreen(),
+    ),
+    GetPage(
+      name: contactScreen,
+      page: () => const ContactScreen(),
     ),
     GetPage(
       name: registerStepsScreen,

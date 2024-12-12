@@ -1,6 +1,7 @@
 import 'package:device_preview/device_preview.dart';
 
 import 'package:dropchats/HomeScreen/controller/home_controller.dart';
+import 'package:dropchats/screen/AuthScreen/controller/contact_controller.dart';
 import 'package:dropchats/screen/AuthScreen/controller/register_controller.dart';
 import 'package:dropchats/screen/OnBoarding/controller/onboarding_controller.dart';
 import 'package:dropchats/screen/bottomScreen/bottombar_controller.dart';
@@ -14,12 +15,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:showcaseview/showcaseview.dart';
-
 import 'screen/AuthScreen/controller/auth_controller.dart';
 import 'screen/chat/controller/chat_controller.dart';
 import 'utils/app_routes.dart';
+import 'package:flutter/services.dart';
 
+LatLng? currentLatLng;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await preferences.init();
@@ -27,6 +31,7 @@ void main() async {
     options: DefaultFirebaseOptions.android,
   );
   await preferences.init();
+
   // runApp(
   //   DevicePreview(
   //     enabled: false,
@@ -55,30 +60,35 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(412, 917),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      useInheritedMediaQuery: true,
-      rebuildFactor: (old, data) => true,
-      builder: (context, child) {
-        Get.put(SocketService());
-        ScreenSize.init(context);
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(
-            textScaler: const TextScaler.linear(1.0),
-          ),
-          child: GetMaterialApp(
-            useInheritedMediaQuery: true,
-            debugShowCheckedModeBanner: false,
-            title: 'dropChats',
-            theme: ThemeData(fontFamily: "Plus Jakarta Sans"),
-            initialBinding: BaseBinding(),
-            initialRoute: Routes.splashScreen,
-            getPages: Routes.routes,
-          ),
-        );
-      },
+    return OKToast(
+      animationCurve: Curves.easeIn,
+      animationDuration: const Duration(milliseconds: 200),
+      duration: const Duration(seconds: 3),
+      child: ScreenUtilInit(
+        designSize: const Size(412, 917),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        useInheritedMediaQuery: true,
+        rebuildFactor: (old, data) => true,
+        builder: (context, child) {
+          Get.put(SocketService());
+          ScreenSize.init(context);
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              textScaler: const TextScaler.linear(1.0),
+            ),
+            child: GetMaterialApp(
+              useInheritedMediaQuery: true,
+              debugShowCheckedModeBanner: false,
+              title: 'dropChats',
+              theme: ThemeData(fontFamily: "Plus Jakarta Sans"),
+              initialBinding: BaseBinding(),
+              initialRoute: Routes.onBoarding,
+              getPages: Routes.routes,
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -94,5 +104,6 @@ class BaseBinding extends Bindings {
     Get.lazyPut(() => ProfileController(), fenix: true);
     Get.lazyPut(() => CommunityController(), fenix: true);
     Get.lazyPut(() => BottomBarController(), fenix: true);
+    Get.lazyPut(() => ContactController(), fenix: true);
   }
 }

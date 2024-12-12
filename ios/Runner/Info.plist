@@ -43,7 +43,13 @@
 	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+     <string>DropChat requests access to your location when the app is in use. This enhances your ability to discover providers in your search and connect with them for sessions.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
+	 <key>NSContactsUsageDescription</key>
+         <string>DropChat would like to access your contacts to help you easily invite friends and connect with others.</string>
 	<true/>
+
+
 </dict>
 </plist>

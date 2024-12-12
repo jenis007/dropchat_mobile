@@ -47,7 +47,7 @@ class OnBoardingController extends GetxController {
 
   @override
   void onInit() {
-    _onInit();
+    // _onInit();
     super.onInit();
   }
 }
